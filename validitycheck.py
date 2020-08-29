@@ -10,17 +10,24 @@ class Board:
             ["aw", "bw", "cw", "dw", "ew", "fw", "gw", "hw"],
             ["rw", "nw", "bw", "qw", "kw", "bw", "nw", "rw"],
         ]
-        self._something = "abcdefgh"
 
-    def move(self, move, piece):
-        col, row = move[0], move[1]
+    def move(self, location, piece):
+        something = "abcdefgh"
+        print(location)
+        col, row = location[1][0], location[1][1]
+        x = location[0]
         t_row = 8 - int(row)
-        t_col = self._something.index(col)
+        t_col = something.index(col)
         for row_i, row in enumerate(self.board):
             for square_i, square in enumerate(row):
                 if square == piece:
-                    self.board[row_i][square_i] = "  "
-                    self.board[t_row][t_col] = piece
+                    if x == "":
+                        self.board[row_i][square_i] = "  "
+                        self.board[t_row][t_col] = piece
+                    elif x != "":
+                        if x == something[row_i]:
+                            self.board[row_i][square_i] = "  "
+                            self.board[t_row][t_col] = piece
 
 
 class Chess:
@@ -52,9 +59,10 @@ class Chess:
 
     def move_parser(self, move):
 
-        location = ""
+        location = []
         piece = ""
         action = None
+        full_move = move
 
         if "x" in move:
             action = "Capture"
@@ -72,42 +80,57 @@ class Chess:
             piece = move[0]
         elif move in ["O-O-O", "O-O"]:
             piece = move
-            location = "Castles"
+            location = ["", move]
             action = "Castles"
 
         if move not in ["O-O-O", "O-O"]:
-            location = move[-2:]
-            # num = str(ord(location[0]) - 96)
-            # location = location.replace(location[0], num)
+            if len(move) > 3:
+                location = [move[1], move[-2:]]
+            else:
+                location = ["", move[-2:]]
 
-        return piece.lower(), location, action, move
+        return piece.lower(), location, action, full_move
 
     def analyse(self, pgn):
         position = self.pgn_parser(pgn)
         for e in position:
             a = self.move_parser(e.split()[1])
             b = self.move_parser(e.split()[2])
+            # print(a, b)
 
-            # print(a[1])
-
-            # print(a[0], b[0], e)
             self.move(a[0], a[1], a[2], "w", a[-1])
             self.move(b[0], b[1], b[2], "b", b[-1])
 
     def move(self, piece, location, action, player, move):
         piece = piece + player
-        if location == "Castles":
-            print(("r" + player))
-            self.board.move("f1", ("r" + player))
-            self.board.move("g1", ("k" + player))
+
+        if location[1] == "O-O-O":
+            if player == "w":
+                self.board.move(["a", "d1"], ("r" + player))
+                self.board.move(["", "c1"], ("k" + player))
+            elif player == "b":
+                self.board.move(["a", "d8"], ("r" + player))
+                self.board.move(["", "c8"], ("k" + player))
+        elif location[1] == "O-O":
+            if player == "w":
+                self.board.move(["h", "f1"], ("r" + player))
+                self.board.move(["", "g1"], ("k" + player))
+            elif player == "b":
+                self.board.move(["h", "g8"], ("r" + player))
+                self.board.move(["", "g8"], ("k" + player))
+        elif len(location[1]) > 1:
+            self.board.move(location, piece)
         else:
             self.board.move(location, piece)
-
         print(move)
         for row in self.board.board:
             print(row)
 
         print()
+
+    def possibleMoves(self):
+        ret = []
+        return ret
 
     def inCheck(self):
         ok = 1

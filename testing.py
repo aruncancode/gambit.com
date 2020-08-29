@@ -24,16 +24,4 @@ Qxf5# 0-1"""
 
 game = Chess()
 
-# print(game.parse(sample2))
 print(game.analyse(s3))
-# print(game.check(s3))
-
-
-# from validitycheck import Board
-
-# b = Board()
-# player = "b"
-# b.move("f1", ("r" + player))
-# b.move("g1", ("k" + player))
-# for e in b.board:
-#     print(e)
