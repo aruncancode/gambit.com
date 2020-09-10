@@ -1,3 +1,17 @@
+class Pawn:
+    def __init__(self, board, location):
+        self.location = location
+        self.board = board
+        self.available = []
+
+    def possibleMoves():
+        moves = []
+
+
+
+        return moves
+
+
 class Board:
     def __init__(self):
         self.board = [
@@ -125,7 +139,6 @@ class Chess:
         print(move)
         for row in self.board.board:
             print(row)
-
         print()
 
     def possibleMoves(self):
@@ -134,7 +147,6 @@ class Chess:
 
     def inCheck(self):
         ok = 1
-
         return ok
 
     def ischeckMate(self):
@@ -148,9 +160,4 @@ class Chess:
     def validPosition(self):
         ok = 0
         return ok
-
-
-# work on fixing analysis
-# castling
-# finish incheck()
 
