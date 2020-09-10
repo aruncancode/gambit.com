@@ -1,50 +1,7 @@
-class Pawn:
-    def __init__(self, board, location):
-        self.location = location
-        self.board = board
-        self.available = []
+from board import Board
+from piece import *
 
-    def possibleMoves():
-        moves = []
-
-
-
-        return moves
-
-
-class Board:
-    def __init__(self):
-        self.board = [
-            ["rb", "nb", "bb", "qb", "kb", "bb", "nb", "rb"],
-            ["ab", "bb", "cb", "db", "eb", "fb", "gb", "hb"],
-            ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
-            ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
-            ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
-            ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
-            ["aw", "bw", "cw", "dw", "ew", "fw", "gw", "hw"],
-            ["rw", "nw", "bw", "qw", "kw", "bw", "nw", "rw"],
-        ]
-
-    def move(self, location, piece):
-        something = "abcdefgh"
-        print(location)
-        col, row = location[1][0], location[1][1]
-        x = location[0]
-        t_row = 8 - int(row)
-        t_col = something.index(col)
-        for row_i, row in enumerate(self.board):
-            for square_i, square in enumerate(row):
-                if square == piece:
-                    if x == "":
-                        self.board[row_i][square_i] = "  "
-                        self.board[t_row][t_col] = piece
-                    elif x != "":
-                        if x == something[row_i]:
-                            self.board[row_i][square_i] = "  "
-                            self.board[t_row][t_col] = piece
-
-
-class Chess:
+class Game:
     def __init__(self):
         self.board = Board()
         return
