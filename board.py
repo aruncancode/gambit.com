@@ -4,6 +4,7 @@ from piece import Rook
 from piece import Bishop
 from piece import Knight
 from piece import Pawn
+l = "abcdefgh"
 
 class Board:
     def __init__(self):
@@ -45,24 +46,29 @@ class Board:
         self.board[6][6] = Pawn("g2" , "w")
         self.board[6][7] = Pawn("h2" ,"w")
 
-    def move(self, location, piece):
-        something = "abcdefgh"
-        print(location)
+    def move(self, piece, location):
         col, row = location[1][0], location[1][1]
         x = location[0]
         t_row = 8 - int(row)
-        t_col = something.index(col)
+        t_col = l.index(col)
         for row_i, row in enumerate(self.board):
             for square_i, square in enumerate(row):
                 if square == piece:
-                    if x == "":
-                        self.board[row_i][square_i] = "  "
+                    if x == 0:
+                        self.board[row_i][square_i] = 0
                         self.board[t_row][t_col] = piece
-                    elif x != "":
-                        if x == something[row_i]:
-                            self.board[row_i][square_i] = "  "
+                            self.board[t_row][t_col].location =l[t_col]+str(8-(t_row-1))
+                    elif x != 0:
+                        if x == l[row_i]:
+                            self.board[row_i][square_i] = 0
                             self.board[t_row][t_col] = piece
+                            self.board[t_row][t_col].location =l[t_col]+str(8-(t_row-1))
     
-    def test(self):
-        return self.board
+    def allMoves(self):
+        moves = []
+        for i in range(8):
+            for e in range(8):
+                if self.board[i][e] != 0:
+                    moves.append(self.board[i][e].possibleMoves(self.board))
+        return moves
 

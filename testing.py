@@ -28,4 +28,4 @@ from board import Board
 # print(game.analyse(s3))
 
 b = Board()
-print(b.board[6][3].possibleMoves(b.board))
+print(b.allMoves())
