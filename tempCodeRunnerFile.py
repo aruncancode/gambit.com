@@ -1,1 +1,2 @@
-print(p.possibleMoves)
+
+# print(b.locate("ROOKW

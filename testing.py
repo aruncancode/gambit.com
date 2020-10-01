@@ -1,8 +1,11 @@
 # from game import Game
-from board import Board
+from board import *
+from game import *
+import itertools
 
+test = """1. e4 d5 2. exd5 Nc6 3. dxc6 bxc6 4. Be2 Rb8 5. a4 Nf6 6. g4 Nxg4 7. h3 Ne3 8. Nf3 O-O OG"""
 
-# sample1 = """1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O b5 6. Bb3 Bc5
+# test = """1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O b5 6. Bb3 Bc5
 # 7. a4 Rb8 8. Nxe5 Nxe5 9. d4 Bxd4 10. Qxd4 d6 11. f4 Nc6
 # 12. Qc3 Ne7 13. axb5 axb5 14. e5 Ne4 15. Qf3 Nc5 16. Ba2 O-O
 # 17. Be3 Bb7 18. Qh3 Ne4 19. Nc3 Nxc3 20. bxc3 Bd5 21. f5 Bxa2
@@ -23,9 +26,15 @@ from board import Board
 # Qxf5# 0-1"""
 
 
-# game = Chess()
 
 # print(game.analyse(s3))
 
-b = Board()
-print(b.allMoves())
+# b = Board()
+# print(b.locate("ROOKW1"))
+# def flatten(list):
+#     return [i for e in list for i in e]
+# print((b.allMoves("w")))
+
+game = Game()
+
+print(game.analyse(test))

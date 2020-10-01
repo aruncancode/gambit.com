@@ -1,4 +1,4 @@
-from board import Board
+from board import *
 from piece import *
 
 
@@ -61,7 +61,7 @@ class Game:
             else:
                 location = ["", move[-2:]]
 
-        return piece.lower(), location, action, full_move
+        return piece, location, action, full_move
 
     def analyse(self, pgn):
         position = self.pgn_parser(pgn)
@@ -74,48 +74,47 @@ class Game:
             self.move(b[0], b[1], b[2], "b", b[-1])
 
     def move(self, piece, location, action, player, move):
-        piece = piece + player
+        # print(len(self.board.allMoves("b")))
+        print(self.board.allMoves("b"))
 
-        if location[1] == "O-O-O":
-            if player == "w":
-                self.board.move(["a", "d1"], ("r" + player))
-                self.board.move(["", "c1"], ("k" + player))
-            elif player == "b":
-                self.board.move(["a", "d8"], ("r" + player))
-                self.board.move(["", "c8"], ("k" + player))
-        elif location[1] == "O-O":
-            if player == "w":
-                self.board.move(["h", "f1"], ("r" + player))
-                self.board.move(["", "g1"], ("k" + player))
-            elif player == "b":
-                self.board.move(["h", "g8"], ("r" + player))
-                self.board.move(["", "g8"], ("k" + player))
-        elif len(location[1]) > 1:
-            self.board.move(location, piece)
-        else:
-            self.board.move(location, piece)
         print(move)
-        for row in self.board.board:
-            print(row)
-        print()
 
-    def possibleMoves(self):
-        ret = []
-        return ret
+        for moves in self.board.allMoves(player):
+            if move in moves[1:]:                
+                self.board.move(self.board.locate(moves[0]), location[1])
+        
+        # self.board.show()
 
-    def inCheck(self):
-        ok = 1
-        return ok
 
-    def ischeckMate(self):
-        ok = 0
-        return ok
 
-    def isStalemate(self):
-        ok = 0
-        return ok
 
-    def validPosition(self):
-        ok = 0
-        return ok
+        # elif len(location[1]) > 1:
+        #     self.board.move(location, piece)
+        # else:
+        #     self.board.move(location, piece)
+
+
+
+
+
+
+    # def possibleMoves(self):
+    #     ret = []
+    #     return ret
+
+    # def inCheck(self):
+    #     ok = 1
+    #     return ok
+
+    # def ischeckMate(self):
+    #     ok = 0
+    #     return ok
+
+    # def isStalemate(self):
+    #     ok = 0
+    #     return ok
+
+    # def validPosition(self):
+    #     ok = 0
+    #     return ok
 
