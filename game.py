@@ -73,18 +73,23 @@ class Game:
             self.move(a[0], a[1], a[2], "w", a[-1])
             self.move(b[0], b[1], b[2], "b", b[-1])
 
-    def move(self, piece, location, action, player, move):
+    def move(self, piece, location, action, colour, move):
         # print(len(self.board.allMoves("b")))
-        print(self.board.allMoves("b"))
-
+        # print(self.board.allMoves("w"))
         print(move)
+        # print(self.board.locate("KINGW"))
 
-        for moves in self.board.allMoves(player):
-            if move in moves[1:]:                
-                self.board.move(self.board.locate(moves[0]), location[1])
+        for ids in self.board.allMoves(colour):
+            if move in self.board.allMoves(colour)[ids]:
+                if move == "O-O":
+                    if colour == "w":
+                        self.board.move("e1", "g1")
+                        self.board.move("h1", "f1")
+                else:
+                    self.board.move(self.board.locate(ids), location[1])
         
-        # self.board.show()
-
+        
+        self.board.show()
 
 
 
@@ -117,4 +122,3 @@ class Game:
     # def validPosition(self):
     #     ok = 0
     #     return ok
-

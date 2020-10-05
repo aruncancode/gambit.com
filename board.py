@@ -74,16 +74,24 @@ class Board:
                    return l[square_i]+str(8-row_i) 
 
 
-    def allMoves(self, colour, board=None):
-        if board == None:
-            board = self.board
-        moves = []
+    def allMoves(self, colour):
+        board = self.board
+        moves = {"b" : {}, "w" : {}}
         for i in range(8):
             for e in range(8):
                 if board[i][e] != 0:
-                    if board[i][e].colour == colour:
-                        moves.append(board[i][e].possibleMoves(board))
-        return moves
+                    moves[board[i][e].colour][board[i][e].id] = (board[i][e].possibleMoves(board))
+        
+        # castles
+        for i in range(8):
+            for e in range(8):
+                if board[i][e] !=0 and board[i][e].id == "KING" + (colour.upper()):
+                    if board[i][e].hasMoved == False:
+                    #short
+                        if board[i][e+1] ==0 and board[i][e+2] ==0:
+                            moves[colour]["KING"+colour.upper()].append("O-O")
+
+        return moves[colour]
 
     def show(self):
         a =[[square.id if square !=0 else 0 for square in row] for row in self.board]
