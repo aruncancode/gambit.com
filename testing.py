@@ -3,7 +3,8 @@ from board import *
 from game import *
 import itertools
 
-test = """1. e4 d5 2. exd5 Nc6 3. dxc6 bxc6 4. Be2 Rb8 5. a4 Nf6 6. g4 Nxg4 7. h3 Ne3 8. Nf3 O-O OG"""
+# test = """1. e4 e5 OG"""
+test = """1. e4 d5 2. exd5 Nc6 3. dxc6 bxc6 4. Be2 Rb8 5. a4 Nf6 6. g4 Nxg4 7. h3 Ne3 8. Nf3 Nxd1 9. O-O Nxf2 10. Rxf2 c5 OG"""
 
 # test = """1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O b5 6. Bb3 Bc5
 # 7. a4 Rb8 8. Nxe5 Nxe5 9. d4 Bxd4 10. Qxd4 d6 11. f4 Nc6

@@ -37,7 +37,7 @@ class Pawn(Piece):
 
     def possibleMoves(self, board):
         y, x = 8 - int(self.location[1]), l.index(self.location[0])
-        moves = [self.id]
+        moves = []
 
         if not self.queen:
             if self.colour == "w":
@@ -118,8 +118,7 @@ class King(Piece):
 
     def possibleMoves(self, board):
         y, x = 8 - int(self.location[1]), l.index(self.location[0])
-        moves = [self.id]
-        opposite_colour = "w" if self.colour == "b" else "b"
+        moves = []
         # Up
         if y != 0 and board[y - 1][x] == 0:
             moves.append((l[x] + str(8 - (y - 1))))
@@ -145,22 +144,9 @@ class King(Piece):
         if y != 7 and x != 7 and board[y + 1][x + 1] == 0:
             moves.append((l[x + 1] + str(8 - (y + 1))))
 
-        #Castling 
-        
-        if not self.hasMoved:
-            if board[7][5] == 0 and board[7][6] == 0:
-                moves.append("O-O")
-            
-            if board[7][3] == 0 and board[7][2] == 0 and board[7][1] == 0:
-                moves.append("O-O-O")
-
-            if board[0][5] == 0 and board[0][6] == 0:
-                moves.append("O-O")
-            
-            if board[0][3] == 0 and board[0][2] == 0 and board[0][1] == 0:
-                moves.append("O-O-O")
-
         return moves
+
+
 
 
 class Queen(Piece):
@@ -173,7 +159,7 @@ class Queen(Piece):
 
     def possibleMoves(self, board):
         y, x = 8 - int(self.location[1]), l.index(self.location[0])
-        moves = [self.id]
+        moves = []
         # Up
         while y != 0:
             if board[y - 1][x] == 0:
@@ -221,34 +207,46 @@ class Queen(Piece):
         # Top Right
         while x != 7 and y != 0:
             if board[y - 1][x + 1] == 0:
-                moves.append((l[x + 1] + str(8 - (y - 1))))
+                moves.append(("Q" + l[x + 1] + str(8 - (y - 1))))
+            elif board[y - 1][x + 1].colour != self.colour:
+                moves.append(("Qx" + l[x + 1] + str(8 - (y - 1))))
+                break
             else:
                 break
             x += 1
             y -= 1
+
         # Bottom Left
         y, x = 8 - int(self.location[1]), l.index(self.location[0])
         while y != 7 and x != 0:
             if board[y + 1][x - 1] == 0:
-                moves.append((l[x - 1] + str(8 - (y + 1))))
+                moves.append(("Q" + l[x - 1] + str(8 - (y + 1))))
+            elif board[y + 1][x - 1].colour != self.colour:
+                moves.append(("Qx" + l[x - 1] + str(8 - (y + 1))))
             else:
                 break
             x -= 1
             y += 1
+
         # Top Left
         y, x = 8 - int(self.location[1]), l.index(self.location[0])
         while y != 0 and x != 0:
             if board[y - 1][x - 1] == 0:
-                moves.append((l[x - 1] + str(8 - (y - 1))))
+                moves.append(("Q" +l[x - 1] + str(8 - (y - 1))))
+            elif board[y - 1][x - 1]:
+                moves.append(("Qx" +l[x - 1] + str(8 - (y - 1))))
             else:
                 break
             x -= 1
             y -= 1
+
         # Bottom Right
         y, x = 8 - int(self.location[1]), l.index(self.location[0])
         while y != 7 and x != 7:
             if board[y + 1][x + 1] == 0:
-                moves.append((l[x + 1] + str(8 - (y + 1))))
+                moves.append(("Q" + l[x + 1] + str(8 - (y + 1))))
+            elif board[y + 1][x + 1].colour != self.colour:
+                moves.append(("Qx" + l[x + 1] + str(8 - (y + 1))))
             else:
                 break
             x += 1
@@ -265,11 +263,14 @@ class Bishop(Piece):
 
     def possibleMoves(self, board):
         y, x = 8 - int(self.location[1]), l.index(self.location[0])
-        moves = [self.id]
+        moves = []
         # Top Right
         while x != 7 and y != 0:
             if board[y - 1][x + 1] == 0:
                 moves.append(("B" + l[x + 1] + str(8 - (y - 1))))
+            elif board[y - 1][x + 1].colour != self.colour:
+                moves.append(("Bx" + l[x + 1] + str(8 - (y - 1))))
+                break
             else:
                 break
             x += 1
@@ -279,6 +280,8 @@ class Bishop(Piece):
         while y != 7 and x != 0:
             if board[y + 1][x - 1] == 0:
                 moves.append(("B" + l[x - 1] + str(8 - (y + 1))))
+            elif board[y + 1][x - 1].colour != self.colour:
+                moves.append(("Bx" + l[x - 1] + str(8 - (y + 1))))
             else:
                 break
             x -= 1
@@ -288,6 +291,8 @@ class Bishop(Piece):
         while y != 0 and x != 0:
             if board[y - 1][x - 1] == 0:
                 moves.append(("B" +l[x - 1] + str(8 - (y - 1))))
+            elif board[y - 1][x - 1]:
+                moves.append(("Bx" +l[x - 1] + str(8 - (y - 1))))
             else:
                 break
             x -= 1
@@ -297,6 +302,8 @@ class Bishop(Piece):
         while y != 7 and x != 7:
             if board[y + 1][x + 1] == 0:
                 moves.append(("B" + l[x + 1] + str(8 - (y + 1))))
+            elif board[y + 1][x + 1].colour != self.colour:
+                moves.append(("Bx" + l[x + 1] + str(8 - (y + 1))))
             else:
                 break
             x += 1
@@ -314,7 +321,7 @@ class Knight(Piece):
 
     def possibleMoves(self, board):
         y, x = 8 - int(self.location[1]), l.index(self.location[0])
-        moves = [self.id]
+        moves = []
 
         # TopLeft1
         if y != 0 and y != 1 and x != 7:
@@ -384,7 +391,7 @@ class Rook(Piece):
 
     def possibleMoves(self, board):
         y, x = 8 - int(self.location[1]), l.index(self.location[0])
-        moves = [self.id]
+        moves = []
 
         # Up
         while y != 0:
