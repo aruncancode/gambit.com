@@ -85,13 +85,12 @@ class Board:
         # castles
         for i in range(8):
             for e in range(8):
-                if board[i][e] !=0 and board[i][e].id == "KING" + (colour.upper()):
-                    if board[i][e].hasMoved == False:
-                    #short
-                        if board[i][e+1] ==0 and board[i][e+2] ==0:
-                            moves[colour]["KING"+colour.upper()].append("O-O")
+                if board[i][e] !=0 and board[i][e].id == "KING" + colour.upper() and board[i][e].hasMoved == False:
+                    if board[i][e+1] ==0 and board[i][e+2] ==0:
+                        moves[colour]["KING"+colour.upper()].append("O-O")
+                        break
 
-        return moves[colour]
+        return moves[colour] if colour != None else moves
 
     def show(self):
         a =[[square.id if square !=0 else 0 for square in row] for row in self.board]

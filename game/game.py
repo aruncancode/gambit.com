@@ -75,7 +75,7 @@ class Game:
 
     def move(self, piece, location, action, colour, move):
         # print(len(self.board.allMoves("b")))
-        # print(self.board.allMoves("w"))
+        print(self.board.allMoves("w"))
         print(move)
         # print(self.board.locate("KINGW"))
 
@@ -89,7 +89,7 @@ class Game:
                     self.board.move(self.board.locate(ids), location[1])
         
         
-        self.board.show()
+        # self.board.show()
 
 
 

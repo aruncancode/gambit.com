@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="js/chessboard-1.0.0.min.js"></script>
+		<script src="js/chessboard-1.0.0.js"></script>
+		<link rel="stylesheet" href="css/chessboard-1.0.0.min.css" />
+		<link rel="stylesheet" href="css\chessboard-1.0.0.css" />
+		<title>Socket Thing1</title>
+	</head>
+	<body>
+		<div id="board1" style="width: 800px"></div>
+		<script>
+			var board = Chessboard("board1", {
+				draggable: true,
+				position: "start",
+				onChange: onChange,
+				onDragMove: onDragMove,
+			});
+
+			function onChange(oldPos, newPos) {
+				l = JSON.stringify(newPos);
+				socket.send(l);
+			}
+
+			function onDragMove(
+				newLocation,
+				oldLocation,
+				source,
+				piece,
+				position,
+				orientation
+			) {
+				console.log(newLocation, piece, source);
+			}
+
+			// Create WebSocket connection.
+			const socket = new WebSocket("ws://localhost:5555");
+
+			// Connection opened
+			socket.addEventListener("open", function (event) {
+				console.log("Connected to the WS Server!");
+			});
+
+			// Connection closed
+			socket.addEventListener("close", function (event) {
+				console.log("Disconnected from the WS Server!");
+			});
+
+			// Listen for messages
+			socket.addEventListener("message", function (event) {
+				console.log("Message from server ", event.data);
+			});
+		</script>
+	</body>
+</html>

@@ -223,6 +223,7 @@ class Queen(Piece):
                 moves.append(("Q" + l[x - 1] + str(8 - (y + 1))))
             elif board[y + 1][x - 1].colour != self.colour:
                 moves.append(("Qx" + l[x - 1] + str(8 - (y + 1))))
+                break
             else:
                 break
             x -= 1
@@ -233,8 +234,9 @@ class Queen(Piece):
         while y != 0 and x != 0:
             if board[y - 1][x - 1] == 0:
                 moves.append(("Q" +l[x - 1] + str(8 - (y - 1))))
-            elif board[y - 1][x - 1]:
+            elif board[y - 1][x - 1].colour != self.colour:
                 moves.append(("Qx" +l[x - 1] + str(8 - (y - 1))))
+                break
             else:
                 break
             x -= 1
@@ -247,6 +249,7 @@ class Queen(Piece):
                 moves.append(("Q" + l[x + 1] + str(8 - (y + 1))))
             elif board[y + 1][x + 1].colour != self.colour:
                 moves.append(("Qx" + l[x + 1] + str(8 - (y + 1))))
+                break
             else:
                 break
             x += 1
@@ -282,6 +285,7 @@ class Bishop(Piece):
                 moves.append(("B" + l[x - 1] + str(8 - (y + 1))))
             elif board[y + 1][x - 1].colour != self.colour:
                 moves.append(("Bx" + l[x - 1] + str(8 - (y + 1))))
+                break
             else:
                 break
             x -= 1
@@ -291,8 +295,9 @@ class Bishop(Piece):
         while y != 0 and x != 0:
             if board[y - 1][x - 1] == 0:
                 moves.append(("B" +l[x - 1] + str(8 - (y - 1))))
-            elif board[y - 1][x - 1]:
+            elif board[y - 1][x - 1].colour != self.colour:
                 moves.append(("Bx" +l[x - 1] + str(8 - (y - 1))))
+                break
             else:
                 break
             x -= 1
@@ -304,6 +309,7 @@ class Bishop(Piece):
                 moves.append(("B" + l[x + 1] + str(8 - (y + 1))))
             elif board[y + 1][x + 1].colour != self.colour:
                 moves.append(("Bx" + l[x + 1] + str(8 - (y + 1))))
+                break
             else:
                 break
             x += 1
