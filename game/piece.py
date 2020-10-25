@@ -144,6 +144,16 @@ class King(Piece):
         if y != 7 and x != 7 and board[y + 1][x + 1] == 0:
             moves.append((l[x + 1] + str(8 - (y + 1))))
 
+        #Castling
+        if self.hasMoved == False:
+            #short
+            if board[y][5]==0 and board[y][6]==0 and board[y][7].type == "Rook":
+                moves.append("O-O")
+
+            #long
+            if board[y][1]==0 and board[y][2]==0 and board[y][3] ==0 and board[y][0].type == "Rook":
+                moves.append("O-O-O")
+
         return moves
 
 

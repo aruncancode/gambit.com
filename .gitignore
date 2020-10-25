@@ -1,7 +1,8 @@
 .cph
 tempCodeRunnerFile.py
 tempCodeRunnerFile.py
-__pycache__/board.cpython-38.pyc
+__pycache__/
 tempCodeRunnerFile.py
 __pycache__/game.cpython-38.pyc
 __pycache__/piece.cpython-38.pyc
+game/__pycache__/piece.cpython-38.pyc

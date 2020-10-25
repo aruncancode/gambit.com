@@ -1,13 +1,12 @@
 # from game import Game
 from board import *
 from game import *
-import itertools
 
+# check = """1. d4 e5 2. e3 Bb4+ 3. c3 f6 4. Nf3 OG *"""
 # test = """1. e4 e5 OG"""
-test = """1. e4 d5 2. exd5 Nc6 3. dxc6 bxc6 4. Be2 Rb8 5. a4 Nf6 6. g4 Nxg4 7. h3 Ne3 8. Nf3 Nxd1 9. O-O Nxf2 10. Rxf2 c5 OG"""
+# castles = """1. Nf3 e5 2. e4 Nc6 3. Bb5 f6 4. d3 Qe7 5. a3 d6 6. Ra2 Bg4 7. g3 O-O-O 8. O-O h6 * """
 # test2 = """1. e4 e5 2. Qh5 Bb4 OG"""
-# test = """1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O b5 6. Bb3 Bc5
-# 7. a4 Rb8 8. Nxe5 Nxe5 9. d4 Bxd4 10. Qxd4 d6 11. f4 Nc6
+# test = """1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O b5 6. Bb3 Bc5 # 7. a4 Rb8 8. Nxe5 Nxe5 9. d4 Bxd4 10. Qxd4 d6 11. f4 Nc6
 # 12. Qc3 Ne7 13. axb5 axb5 14. e5 Ne4 15. Qf3 Nc5 16. Ba2 O-O
 # 17. Be3 Bb7 18. Qh3 Ne4 19. Nc3 Nxc3 20. bxc3 Bd5 21. f5 Bxa2
 # 22. Rxa2 dxe5 23. f6 gxf6 24. Bh6 Re8 25. Ra6 Rb6 26. Rxb6
@@ -28,14 +27,8 @@ test = """1. e4 d5 2. exd5 Nc6 3. dxc6 bxc6 4. Be2 Rb8 5. a4 Nf6 6. g4 Nxg4 7. h
 
 
 
-# print(game.analyse(s3))
 
-# b = Board()
-# print(b.locate("ROOKW1"))
-# def flatten(list):
-#     return [i for e in list for i in e]
-# print((b.allMoves("w")))
 
 game = Game()
 
-print(game.analyse(test))
+# print(game.analyse(sample2))

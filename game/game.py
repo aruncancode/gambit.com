@@ -1,7 +1,6 @@
 from board import *
 from piece import *
 
-
 class Game:
     def __init__(self):
         self.board = Board()
@@ -35,10 +34,8 @@ class Game:
         piece = ""
         action = None
         full_move = move
-
         if "x" in move:
             action = "Capture"
-            move = move.replace("x", "")
         if "+" in move:
             action = "Check"
             move = move.replace("+", "")
@@ -61,7 +58,7 @@ class Game:
             else:
                 location = ["", move[-2:]]
 
-        return piece, location, action, full_move
+        return piece, location, action, move
 
     def analyse(self, pgn):
         position = self.pgn_parser(pgn)
@@ -69,30 +66,52 @@ class Game:
             a = self.move_parser(e.split()[1])
             b = self.move_parser(e.split()[2])
             # print(a, b)
-
-            self.move(a[0], a[1], a[2], "w", a[-1])
-            self.move(b[0], b[1], b[2], "b", b[-1])
+            if self.move(a[0], a[1], a[2], "w", a[-1]) == False:
+                return False
+            if self.move(b[0], b[1], b[2], "b", b[-1]) == False:
+                return False
+        return True
 
     def move(self, piece, location, action, colour, move):
+        l = "abcdefgh"
+        op_colour = "w" if "w" != colour else "b"
+
         # print(len(self.board.allMoves("b")))
-        print(self.board.allMoves("w"))
+        # print(self.board.allMoves("b"))
         print(move)
+        print(location[0])
+        # print(flatten(self.board.allMoves(colour)))
         # print(self.board.locate("KINGW"))
+        if move == "OG":
+            return
+
+        if move not in flatten(self.board.allMoves(colour)):
+            return False
 
         for ids in self.board.allMoves(colour):
             if move in self.board.allMoves(colour)[ids]:
+                king_location = self.board.locate("KING" + colour.upper())
                 if move == "O-O":
-                    if colour == "w":
-                        self.board.move("e1", "g1")
-                        self.board.move("h1", "f1")
+                    rook_location = self.board.locate("ROOK" + colour.upper() + "2")
+                    self.board.move(king_location, l[(int(l.index(king_location[0])) + 2)] + king_location[1])
+                    self.board.move(rook_location, l[(int(l.index(rook_location[0])) -2)] + rook_location[1])
+                elif move == "O-O-O":
+                    rook_location = self.board.locate("ROOK" + colour.upper() + "1")
+                    self.board.move(king_location, l[(int(l.index(king_location[0])) - 2)] + king_location[1])
+                    self.board.move(rook_location, l[(int(l.index(rook_location[0])) +3)] + rook_location[1])
                 else:
                     self.board.move(self.board.locate(ids), location[1])
+            # else:
+            #     print(move)
+            #     return False
         
         
         # self.board.show()
-
-
-
+        # print(move)
+        if self.board.inCheck(colour, self.board.allMoves(op_colour)) == False:
+            return (True)
+        else:
+            return (False)
         # elif len(location[1]) > 1:
         #     self.board.move(location, piece)
         # else:
@@ -101,16 +120,19 @@ class Game:
 
 
 
+        
 
+    # def inCheck(self, colour):
+    #     opponent_colour = "b" if colour == "w" else "w"
+    #     king_location = self.board.locate("KING" + colour.upper())
+    #     opponent_moves = self.board.allMoves(opponent_colour)
+    #     for pieces in opponent_moves:
+    #         for move in opponent_moves[pieces]:
+    #             if king_location in move:
+    #                 return True
+    #     return False
 
-    # def possibleMoves(self):
-    #     ret = []
-    #     return ret
-
-    # def inCheck(self):
-    #     ok = 1
-    #     return ok
-
+        
     # def ischeckMate(self):
     #     ok = 0
     #     return ok
@@ -122,3 +144,10 @@ class Game:
     # def validPosition(self):
     #     ok = 0
     #     return ok
+
+def flatten(dict):
+    a = []
+    for key in dict:
+        for move in dict[key]:
+            a.append(move)
+    return a
