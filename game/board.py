@@ -77,24 +77,41 @@ class Board:
     def allMoves(self, colour):
         board = self.board
         moves = {"b" : {}, "w" : {}}
+        op_colour = "w" if colour != "w" else colour
         for i in range(8):
             for e in range(8):
                 if board[i][e] != 0:
                     moves[board[i][e].colour][board[i][e].id] = (board[i][e].possibleMoves(board))
         
         # castles
-        for i in range(8):
-            for e in range(8):
-                if board[i][e] !=0 and board[i][e].id == "KING" + (colour.upper()):
-                    if board[i][e].hasMoved == False:
-                    #short
-                        if board[i][e+1] ==0 and board[i][e+2] ==0:
-                            moves[colour]["KING"+colour.upper()].append("O-O")
+        # for i in range(8):
+        #     for e in range(8):
+        #         if board[i][e] !=0 and board[i][e].id == "KING" + colour.upper() and board[i][e].hasMoved == False:
+        #             if board[i][e+1] ==0 and board[i][e+2] ==0:
+        #                 moves[colour]["KING"+colour.upper()].append("O-O")
+        #                 break
+
+        # for e in moves[colour]:
+        #     for move in e:
+        #         self.move(self.locate(e), move)
+        #         if self.inCheck(colour, moves[op_colour]) == True:
+        #             e.remove(move)
 
         return moves[colour]
+
+    
+    
+    def inCheck(self, colour, opponent_moves):
+        king_location = self.locate("KING" + colour.upper())
+        for pieces in opponent_moves:
+            for move in opponent_moves[pieces]:
+                if king_location in move:
+                    return True
+        return False
 
     def show(self):
         a =[[square.id if square !=0 else 0 for square in row] for row in self.board]
         for e in a:
             print(e)
             # print("\n")
+        print(" ")
