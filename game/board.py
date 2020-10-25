@@ -110,7 +110,7 @@ class Board:
         return False
 
     def show(self):
-        a =[[square.id if square !=0 else 0 for square in row] for row in self.board]
+        a =[[square.icon if square !=0 else "\u25A1" for square in row] for row in self.board]
         for e in a:
             print(e)
             # print("\n")
