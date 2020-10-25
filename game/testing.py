@@ -2,7 +2,7 @@
 from board import *
 from game import *
 
-# check = """1. d4 e5 2. e3 Bb4+ 3. c3 f6 4. Nf3 OG *"""
+check = """1. d4 e5 2. e3 Bb4+ 3. c3 f6 4. Nf3 OG *"""
 # test = """1. e4 e5 OG"""
 # castles = """1. Nf3 e5 2. e4 Nc6 3. Bb5 f6 4. d3 Qe7 5. a3 d6 6. Ra2 Bg4 7. g3 O-O-O 8. O-O h6 * """
 # test2 = """1. e4 e5 2. Qh5 Bb4 OG"""
@@ -30,5 +30,6 @@ from game import *
 
 
 game = Game()
+# print("\u2654")
 
-# print(game.analyse(sample2))
+print(game.analyse(check))

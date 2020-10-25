@@ -1,0 +1,25 @@
+#board {
+	width: 800px;
+	height: 800px;
+	border: 1px solid black;
+}
+
+.square {
+	display: inline-block;
+}
+
+.piece {
+	position: relative;
+	cursor: pointer;
+}
+
+.piece-img {
+	height: 100px;
+	width: 100px;
+}
+
+div {
+	width: 100px;
+	height: 100px;
+	float: left;
+}

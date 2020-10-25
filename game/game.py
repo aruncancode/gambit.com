@@ -78,8 +78,7 @@ class Game:
 
         # print(len(self.board.allMoves("b")))
         # print(self.board.allMoves("b"))
-        print(move)
-        print(location[0])
+        # print(move)
         # print(flatten(self.board.allMoves(colour)))
         # print(self.board.locate("KINGW"))
         if move == "OG":
@@ -106,7 +105,7 @@ class Game:
             #     return False
         
         
-        # self.board.show()
+        self.board.show()
         # print(move)
         if self.board.inCheck(colour, self.board.allMoves(op_colour)) == False:
             return (True)

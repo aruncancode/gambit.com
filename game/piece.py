@@ -33,6 +33,11 @@ class Pawn(Piece):
         self.queen = False
         self.type = "Pawn"
         self.name = self.location[0]
+        
+        if self.colour == "w":
+            self.icon = "\u2659"
+        else:
+            self.icon = "\u265F"
 
 
     def possibleMoves(self, board):
@@ -115,6 +120,10 @@ class King(Piece):
         self.type = "King"
         self.name = "K"
         self.hasMoved = False
+        if self.colour == "w":
+            self.icon = "\u2654"
+        else:
+            self.icon = "\u265A"
 
     def possibleMoves(self, board):
         y, x = 8 - int(self.location[1]), l.index(self.location[0])
@@ -164,6 +173,11 @@ class Queen(Piece):
         super().__init__(location, colour, id)
         self.type = "Queen"
         self.name = "Q"
+        self.icon = "Q"
+        if self.colour == "w":
+            self.icon = "\u2655"
+        else:
+            self.icon = "\u265B"
 
 
 
@@ -273,6 +287,10 @@ class Bishop(Piece):
         super().__init__(location, colour, id)
         self.type = "Bishop"
         self.name = "B"
+        if self.colour == "w":
+            self.icon = "\u2657"
+        else:
+            self.icon = "\u265D"
 
     def possibleMoves(self, board):
         y, x = 8 - int(self.location[1]), l.index(self.location[0])
@@ -332,8 +350,11 @@ class Knight(Piece):
     def __init__(self, location, colour, id):
         super().__init__(location, colour, id)
         self.type = "Knight"
-        self.name = "K"
-
+        self.name = "N"
+        if self.colour == "w":
+            self.icon = "\u2658"
+        else:
+            self.icon = "\u265E"
 
     def possibleMoves(self, board):
         y, x = 8 - int(self.location[1]), l.index(self.location[0])
@@ -403,6 +424,10 @@ class Rook(Piece):
         super().__init__(location, colour, id)
         self.type = "Rook"
         self.name = "R"
+        if self.colour == "w":
+            self.icon = "\u2656"
+        else:
+            self.icon = "\u265C"
 
 
     def possibleMoves(self, board):
