@@ -1,5 +1,4 @@
 # from game import Game
-from board import *
 from game import *
 
 check = """1. d4 e5 2. e3 Bb4+ 3. c3 f6 4. Nf3 OG *"""

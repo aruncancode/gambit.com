@@ -61,18 +61,18 @@ class Game:
         return piece, location, action, move
 
     def analyse(self, pgn):
-        position = self.pgn_parser(pgn)
-        for e in position:
-            a = self.move_parser(e.split()[1])
-            b = self.move_parser(e.split()[2])
+        # position = self.pgn_parser(pgn)
+        for moves in pgn:
+            a = moves[0]
+            b = moves[-1]
             # print(a, b)
-            if self.move(a[0], a[1], a[2], "w", a[-1]) == False:
+            if self.move(a[1:],"w", a) == False:
                 return False
-            if self.move(b[0], b[1], b[2], "b", b[-1]) == False:
+            if self.move(b[1:],"b", b) == False:
                 return False
         return True
 
-    def move(self, piece, location, action, colour, move):
+    def move(self, location, colour, move):
         l = "abcdefgh"
         op_colour = "w" if "w" != colour else "b"
 
