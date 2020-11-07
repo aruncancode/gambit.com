@@ -6,87 +6,84 @@ class Game:
         self.board = Board()
         return
 
-    def pgn_parser(self, pgn):
-        moves = []
-        ret = {"w": [], "b": [], "result": ""}
-        e = 2
-        pgn = " ".join(pgn.splitlines())
+    # def pgn_parser(self, pgn):
+    #     moves = []
+    #     ret = {"w": [], "b": [], "result": ""}
+    #     e = 2
+    #     pgn = " ".join(pgn.splitlines())
 
-        while e:
-            a = pgn.split(str(e) + ".")[0]
-            if len(a) > 0:
-                moves.append(a)
-                ret["w"].append(a.split()[1])
-                ret["b"].append(a.split()[2])
-                ret["result"] = a.split()[-1]
-                pgn = pgn.replace(a, "")
-                e += 1
-            else:
-                e = 0
-                moves[-1] = " ".join(moves[-1].split()[:-1])
-                if ret["b"][-1] in ["0-1", "0.5-0.5", "1-0"]:
-                    ret["b"].pop(-1)
-        return moves
+    #     while e:
+    #         a = pgn.split(str(e) + ".")[0]
+    #         if len(a) > 0:
+    #             moves.append(a)
+    #             ret["w"].append(a.split()[1])
+    #             ret["b"].append(a.split()[2])
+    #             ret["result"] = a.split()[-1]
+    #             pgn = pgn.replace(a, "")
+    #             e += 1
+    #         else:
+    #             e = 0
+    #             moves[-1] = " ".join(moves[-1].split()[:-1])
+    #             if ret["b"][-1] in ["0-1", "0.5-0.5", "1-0"]:
+    #                 ret["b"].pop(-1)
+    #     return moves
 
-    def move_parser(self, move):
+    # def move_parser(self, move):
 
-        location = []
-        piece = ""
-        action = None
-        full_move = move
-        if "x" in move:
-            action = "Capture"
-        if "+" in move:
-            action = "Check"
-            move = move.replace("+", "")
-        if "#" in move:
-            action = "Checkmate"
-            move = move.replace("#", "")
+    #     location = []
+    #     piece = ""
+    #     action = None
+    #     full_move = move
+    #     if "x" in move:
+    #         action = "Capture"
+    #     if "+" in move:
+    #         action = "Check"
+    #         move = move.replace("+", "")
+    #     if "#" in move:
+    #         action = "Checkmate"
+    #         move = move.replace("#", "")
 
-        if move[0] in [chr(e) for e in range(97, 105)]:
-            piece = move[0]
-        elif move[0] in ["N", "B", "Q", "K", "R"]:
-            piece = move[0]
-        elif move in ["O-O-O", "O-O"]:
-            piece = move
-            location = ["", move]
-            action = "Castles"
+    #     if move[0] in [chr(e) for e in range(97, 105)]:
+    #         piece = move[0]
+    #     elif move[0] in ["N", "B", "Q", "K", "R"]:
+    #         piece = move[0]
+    #     elif move in ["O-O-O", "O-O"]:
+    #         piece = move
+    #         location = ["", move]
+    #         action = "Castles"
 
-        if move not in ["O-O-O", "O-O"]:
-            if len(move) > 3:
-                location = [move[1], move[-2:]]
-            else:
-                location = ["", move[-2:]]
+    #     if move not in ["O-O-O", "O-O"]:
+    #         if len(move) > 3:
+    #             location = [move[1], move[-2:]]
+    #         else:
+    #             location = ["", move[-2:]]
 
-        return piece, location, action, move
+    #     return piece, location, action, move
 
     def analyse(self, pgn):
         # position = self.pgn_parser(pgn)
         for moves in pgn:
             a = moves[0]
             b = moves[-1]
-            # print(a, b)
-            if self.move(a[1:],"w", a) == False:
+            # self.board.show()
+            if self.move(a[-2:],"w", a) == False:
                 return False
-            if self.move(b[1:],"b", b) == False:
+            if self.move(b[-2:],"b", b) == False:
                 return False
+            self.board.show()
         return True
+
 
     def move(self, location, colour, move):
         l = "abcdefgh"
         op_colour = "w" if "w" != colour else "b"
-
-        # print(len(self.board.allMoves("b")))
-        # print(self.board.allMoves("b"))
-        # print(move)
-        # print(flatten(self.board.allMoves(colour)))
-        # print(self.board.locate("KINGW"))
+        print(move)
         if move == "OG":
             return
-
-        if move not in flatten(self.board.allMoves(colour)):
-            return False
-
+        moves = flatten(self.board.allMoves(colour))
+        for e in range(len(moves)):
+            if move not in moves[e] and e== len(moves):
+                return False
         for ids in self.board.allMoves(colour):
             if move in self.board.allMoves(colour)[ids]:
                 king_location = self.board.locate("KING" + colour.upper())
@@ -99,13 +96,13 @@ class Game:
                     self.board.move(king_location, l[(int(l.index(king_location[0])) - 2)] + king_location[1])
                     self.board.move(rook_location, l[(int(l.index(rook_location[0])) +3)] + rook_location[1])
                 else:
-                    self.board.move(self.board.locate(ids), location[1])
+                    self.board.move(self.board.locate(ids), location)
             # else:
             #     print(move)
             #     return False
         
         
-        self.board.show()
+        # self.board.show()
         # print(move)
         if self.board.inCheck(colour, self.board.allMoves(op_colour)) == False:
             return (True)

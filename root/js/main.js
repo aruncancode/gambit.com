@@ -1,15 +1,30 @@
-const piece = document.querySelector(".piece");
-const square = document.querySelector(".square");
+move = "";
+moved_piece = 0;
+pgn = [];
 
-piece.addEventListener('dragstart', dragStart);
-piece.addEventListener('dragend', dragEnd);
-
-function dragStart(){
-    // console.log(this.id, this.parentNode.id)
-    console.log("start")
+function dragStart() {
+	moved_piece = this;
+	// console.log(moved_piece)
 }
 
-function dragEnd(){
-    // console.log(this.id, this.parentNode.id)
-    console.log("stop")
+function dragEnd() {}
+
+function dragEnter() {
+	move = this.id;
+}
+function dragDrop() {
+	time = 500;
+	if (this.hasChildNodes()) {
+		this.removeChild(this.lastElementChild);
+		this.append(moved_piece);
+	} else {
+		this.append(moved_piece);
+	}
+	move = moved_piece.id + this.id;
+	onmove(move, time, colour);
+	// console.log(pgn)
+}
+
+function dragOver(e) {
+	e.preventDefault();
 }
