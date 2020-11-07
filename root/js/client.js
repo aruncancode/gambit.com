@@ -17,22 +17,22 @@ socket.addEventListener("message", function (event) {
 
 	if(event.data == "b" ||  event.data =="w"){
 		localStorage.setItem("colour", event.data)
-		console.log(localStorage.getItem("colour"))
 
 		if(event.data == "w"){
-			token = true;
+			set_token(true)
+			// token = true;
 		}
 		else{
-			token = false;
+			set_token(false)
+			// token = false;
 		}
 
 	}
 
 	else if(event.data == "false"){
 		set_board(event.data)
-		token = true;
+		set_token(true)
 	}
-	console.log(token)
 });
 
 
@@ -41,14 +41,21 @@ socket.addEventListener("message", function (event) {
 function onmove(move, time, player){
 	a = {"move" : move, "time" : time, "colour" : player}
 	a= JSON.stringify(a)
-	console.log(a)
 	socket.send(a)
-	token = false;
+	set_token(false)
 	// document.getElementById("board").style.userSelect = "none"
 	// document.getElementsByClassName("piece").style.userSelect = "none"
-	for(ob of document.getElementsByClassName("piece")){
-		ob.style.userSelect = "none"
-	}
+	// for(ob of document.getElementsByClassName("piece")){
+	// 	ob.style.userSelect = "none"
+	// }
 	// $("#board").style.userSelect = "none"
 	// console.log('{"move" : move, "time" : time, "colour" : player}')
+}
+
+function set_token(val){
+	localStorage.setItem("token", val)
+}
+
+function get_token(){
+	return localStorage.getItem("token")
 }

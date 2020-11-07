@@ -50,7 +50,6 @@ function assign(name, e, link, c) {
 	document.getElementById(e).appendChild(piece);
 }
 
-
 function set_board() {
 	assign(
 		"R",
@@ -247,9 +246,7 @@ function set_board() {
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Chess_plt45.svg/1024px-Chess_plt45.svg.png",
 		"w"
 	);
-
 }
-
 
 move = "";
 moved_piece = 0;
@@ -267,17 +264,24 @@ function dragEnter() {
 }
 function dragDrop() {
 	time = 500;
-	if (this.hasChildNodes()) {
-		this.removeChild(this.lastElementChild);
-		this.append(moved_piece);
-	} else {
-		this.append(moved_piece);
+	a = get_token()
+	if (a == true) {
+		if (this.hasChildNodes()) {
+			this.removeChild(this.lastElementChild);
+			this.append(moved_piece);
+		} else {
+			this.append(moved_piece);
+		}
+		move = moved_piece.id + this.id;
+		onmove(move, time, colour);
+		// console.log(pgn)
 	}
-	move = moved_piece.id + this.id;
-	onmove(move, time, colour);
-	// console.log(pgn)
+	else{
+		console.log(get_token())
+	}
 }
 
 function dragOver(e) {
 	e.preventDefault();
 }
+

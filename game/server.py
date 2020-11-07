@@ -9,11 +9,10 @@ connected = set()
 pgn = []
 games ={"w": [], "b" : []}
 pool = ["w", "b"]
-socket_count = 0
 game = Game()
 
 async def server(websocket, path):
-    global socket_count, games, pool
+    global games, pool
     connected.add(websocket)
     pool = pool[::-1]
     games[pool[-1]].append(websocket)
@@ -26,7 +25,6 @@ async def server(websocket, path):
         async for data in websocket:
             print(data)
     finally:
-        # Unregister.
         connected.remove(websocket)
     
 
