@@ -1,5 +1,5 @@
 // Create WebSocket connection.
-const socket = new WebSocket("ws://192.168.0.5:5555");
+const socket = new WebSocket("ws://localhost:5555");
 
 // Connection opened
 socket.addEventListener("open", function (event) {
@@ -15,34 +15,34 @@ socket.addEventListener("close", function (event) {
 socket.addEventListener("message", function (event) {
 	// console.log("Message from server ", event.data);
 
-	if(event.data == "b" ||  event.data =="w"){
-		localStorage.setItem("colour", event.data)
+	if (event.data == "1" || event.data == "0") {
+		localStorage.setItem("colour", event.data == "1" ? "w" : "b");
+		console.log(localStorage.getItem("colour"));
 
-		if(event.data == "w"){
-			set_token(true)
+		if (event.data == "1") {
+			set_token(true);
 			// token = true;
 		}
-		else{
-			set_token(false)
-			// token = false;
-		}
-
-	}
-
-	else if(event.data == "false"){
-		set_board(event.data)
-		set_token(true)
+	} else if (event.data == "false") {
+		set_board(event.data);
+		set_token(true);
+	} else if (event.data.includes("move")) {
+		ob = JSON.parse(event.data)
+		console.log(ob)
+		set_token(true);
+		// change_board(event.data["move"])
+	} else {
+		console.log(event.data);
 	}
 });
 
-
 // send pgn
 
-function onmove(move, time, player){
-	a = {"move" : move, "time" : time, "colour" : player}
-	a= JSON.stringify(a)
-	socket.send(a)
-	set_token(false)
+function onmove(move, time, player) {
+	a = { move: move, time: time, colour: player };
+	a = JSON.stringify(a);
+	socket.send(a);
+	set_token(false);
 	// document.getElementById("board").style.userSelect = "none"
 	// document.getElementsByClassName("piece").style.userSelect = "none"
 	// for(ob of document.getElementsByClassName("piece")){
@@ -52,10 +52,10 @@ function onmove(move, time, player){
 	// console.log('{"move" : move, "time" : time, "colour" : player}')
 }
 
-function set_token(val){
-	localStorage.setItem("token", val)
+function set_token(val) {
+	localStorage.setItem("token", val);
 }
 
-function get_token(){
-	return localStorage.getItem("token")
+function get_token() {
+	return localStorage.getItem("token") == "true";
 }

@@ -1,6 +1,7 @@
 from board import *
 from piece import *
 
+
 class Game:
     def __init__(self):
         self.board = Board()
@@ -60,19 +61,30 @@ class Game:
 
     #     return piece, location, action, move
 
+    def pgn_parser(self, pgn):
+        out = []
+        cur = []
+        if len(pgn) == 1:
+            return [[pgn[-1], "OG"]]
+        for i in range(0, len(pgn)):
+            cur.append(pgn[i])
+            if i % 2 == 1:
+                out.append(cur)
+                cur = []
+        return out
+
     def analyse(self, pgn):
-        # position = self.pgn_parser(pgn)
-        for moves in pgn:
+        position = self.pgn_parser(pgn)
+        for moves in position:
             a = moves[0]
             b = moves[-1]
             # self.board.show()
-            if self.move(a[-2:],"w", a) == False:
+            if self.move(a[-2:], "w", a) == False:
                 return False
-            if self.move(b[-2:],"b", b) == False:
+            if self.move(b[-2:], "b", b) == False:
                 return False
             self.board.show()
         return True
-
 
     def move(self, location, colour, move):
         l = "abcdefgh"
@@ -82,41 +94,47 @@ class Game:
             return
         moves = flatten(self.board.allMoves(colour))
         for e in range(len(moves)):
-            if move not in moves[e] and e== len(moves):
+            if move not in moves[e] and e == len(moves):
                 return False
         for ids in self.board.allMoves(colour):
             if move in self.board.allMoves(colour)[ids]:
                 king_location = self.board.locate("KING" + colour.upper())
                 if move == "O-O":
                     rook_location = self.board.locate("ROOK" + colour.upper() + "2")
-                    self.board.move(king_location, l[(int(l.index(king_location[0])) + 2)] + king_location[1])
-                    self.board.move(rook_location, l[(int(l.index(rook_location[0])) -2)] + rook_location[1])
+                    self.board.move(
+                        king_location,
+                        l[(int(l.index(king_location[0])) + 2)] + king_location[1],
+                    )
+                    self.board.move(
+                        rook_location,
+                        l[(int(l.index(rook_location[0])) - 2)] + rook_location[1],
+                    )
                 elif move == "O-O-O":
                     rook_location = self.board.locate("ROOK" + colour.upper() + "1")
-                    self.board.move(king_location, l[(int(l.index(king_location[0])) - 2)] + king_location[1])
-                    self.board.move(rook_location, l[(int(l.index(rook_location[0])) +3)] + rook_location[1])
+                    self.board.move(
+                        king_location,
+                        l[(int(l.index(king_location[0])) - 2)] + king_location[1],
+                    )
+                    self.board.move(
+                        rook_location,
+                        l[(int(l.index(rook_location[0])) + 3)] + rook_location[1],
+                    )
                 else:
                     self.board.move(self.board.locate(ids), location)
             # else:
             #     print(move)
             #     return False
-        
-        
+
         # self.board.show()
         # print(move)
         if self.board.inCheck(colour, self.board.allMoves(op_colour)) == False:
-            return (True)
+            return True
         else:
-            return (False)
+            return False
         # elif len(location[1]) > 1:
         #     self.board.move(location, piece)
         # else:
         #     self.board.move(location, piece)
-
-
-
-
-        
 
     # def inCheck(self, colour):
     #     opponent_colour = "b" if colour == "w" else "w"
@@ -128,7 +146,6 @@ class Game:
     #                 return True
     #     return False
 
-        
     # def ischeckMate(self):
     #     ok = 0
     #     return ok
@@ -140,6 +157,7 @@ class Game:
     # def validPosition(self):
     #     ok = 0
     #     return ok
+
 
 def flatten(dict):
     a = []

@@ -248,6 +248,13 @@ function set_board() {
 	);
 }
 
+function change_board(pgn) {
+	for (i = 0; i < pgn.length; i++) {
+		console.log('hi')
+		console.log(document.getElementById(pgn[i][0]));
+	}
+}
+
 move = "";
 moved_piece = 0;
 pgn = [];
@@ -264,7 +271,7 @@ function dragEnter() {
 }
 function dragDrop() {
 	time = 500;
-	a = get_token()
+	a = get_token();
 	if (a == true) {
 		if (this.hasChildNodes()) {
 			this.removeChild(this.lastElementChild);
@@ -275,13 +282,11 @@ function dragDrop() {
 		move = moved_piece.id + this.id;
 		onmove(move, time, colour);
 		// console.log(pgn)
-	}
-	else{
-		console.log(get_token())
+	} else {
+		console.log(get_token());
 	}
 }
 
 function dragOver(e) {
 	e.preventDefault();
 }
-
