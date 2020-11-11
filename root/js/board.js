@@ -42,7 +42,7 @@ function assign(name, e, link, c) {
 	icon.className = "piece-img";
 	icon.draggable == "false";
 	if (colour == c) {
-		icon.draggable == "true";
+		piece.className = "own-piece";
 	}
 	piece.appendChild(icon);
 	piece.ondragstart = dragStart;
@@ -249,8 +249,8 @@ function set_board() {
 }
 
 function change_board(pgn) {
+	pieces = document.getElementsByClassName("pieces")
 	for (i = 0; i < pgn.length; i++) {
-		console.log('hi')
 		console.log(document.getElementById(pgn[i][0]));
 	}
 }
@@ -272,7 +272,7 @@ function dragEnter() {
 function dragDrop() {
 	time = 500;
 	a = get_token();
-	if (a == true) {
+	if (a == true && moved_piece.className == 'own-piece') {
 		if (this.hasChildNodes()) {
 			this.removeChild(this.lastElementChild);
 			this.append(moved_piece);

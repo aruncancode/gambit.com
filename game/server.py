@@ -33,7 +33,7 @@ async def server(websocket, path):
             print(test_pgn)
             if game.analyse(test_pgn) == True:
                 pgn.append(move)
-                await games[str(int(not int(colour)))][-1].send("{\"move\": %s}" % move)
+                await games[str(int(not int(colour)))][-1].send("{\"move\":\"%s\"}" % move)
             elif game.analyse(test_pgn) == False:
                 test_pgn.pop(-1)
                 await games[str(int(colour))][-1].send("{\"invalid\": %s}" % pgn)

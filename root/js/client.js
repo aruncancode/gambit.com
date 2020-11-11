@@ -13,8 +13,6 @@ socket.addEventListener("close", function (event) {
 
 // Listen for messages
 socket.addEventListener("message", function (event) {
-	// console.log("Message from server ", event.data);
-
 	if (event.data == "1" || event.data == "0") {
 		localStorage.setItem("colour", event.data == "1" ? "w" : "b");
 		console.log(localStorage.getItem("colour"));
@@ -24,17 +22,15 @@ socket.addEventListener("message", function (event) {
 			// token = true;
 		}
 	} else if (event.data.includes("invalid")) {
-		// a = JSON.parse(event.data)
-		// console.log(a.invalid)
-		console.log(event.data)
-		// change_board(JSON.parse(event.data))
+		a = JSON.parse(event.data)
+		console.log(a.invalid)
+		// change_board(event.data.invalid)
 		set_token(true);
 	} else if (event.data.includes("move")) {
-		console.log(event.data)
-		// ob = JSON.parse(event.dat/a)
-		// console.log(ob.move)
+		ob = JSON.parse(event.data)
+		console.log(ob.move)
+		// change_board(event.data.move)
 		set_token(true);
-		// change_board(event.data["move"])
 	} else {
 		console.log(event.data);
 	}
