@@ -23,12 +23,16 @@ socket.addEventListener("message", function (event) {
 			set_token(true);
 			// token = true;
 		}
-	} else if (event.data == "false") {
-		set_board(event.data);
+	} else if (event.data.includes("invalid")) {
+		// a = JSON.parse(event.data)
+		// console.log(a.invalid)
+		console.log(event.data)
+		// change_board(JSON.parse(event.data))
 		set_token(true);
 	} else if (event.data.includes("move")) {
-		ob = JSON.parse(event.data)
-		console.log(ob)
+		console.log(event.data)
+		// ob = JSON.parse(event.dat/a)
+		// console.log(ob.move)
 		set_token(true);
 		// change_board(event.data["move"])
 	} else {

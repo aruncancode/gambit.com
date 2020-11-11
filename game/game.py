@@ -7,6 +7,9 @@ class Game:
         self.board = Board()
         return
 
+    def reset(self):
+        self.__init__()
+
     # def pgn_parser(self, pgn):
     #     moves = []
     #     ret = {"w": [], "b": [], "result": ""}
@@ -71,6 +74,9 @@ class Game:
             if i % 2 == 1:
                 out.append(cur)
                 cur = []
+            if i == len(pgn)-1 and len(pgn)%2==1:
+                cur = [pgn[i], "OG"]
+                out.append(cur)
         return out
 
     def analyse(self, pgn):
@@ -83,19 +89,22 @@ class Game:
                 return False
             if self.move(b[-2:], "b", b) == False:
                 return False
-            self.board.show()
+            # self.board.show()
         return True
 
     def move(self, location, colour, move):
         l = "abcdefgh"
         op_colour = "w" if "w" != colour else "b"
-        print(move)
         if move == "OG":
             return
-        moves = flatten(self.board.allMoves(colour))
-        for e in range(len(moves)):
-            if move not in moves[e] and e == len(moves):
+        possible_moves = flatten(self.board.allMoves(colour))
+
+        for e in range(len(possible_moves)):
+            if move == possible_moves[e]:
+                break
+            if e == len(possible_moves)-1:
                 return False
+
         for ids in self.board.allMoves(colour):
             if move in self.board.allMoves(colour)[ids]:
                 king_location = self.board.locate("KING" + colour.upper())

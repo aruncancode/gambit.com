@@ -11,30 +11,35 @@ test_pgn = []
 games = {"1": [], "0": []}
 pool = [1, 0]
 game = Game()
-player = 1
+player = {}
 
 
 async def server(websocket, path):
-    global games, pool, pgn, test_pgn, player
+    global games, pool, pgn, player, test_pgn
     connected.add(websocket)
     pool = pool[::-1]
     games[str(pool[-1])].append(websocket)
-    test_pgn = pgn
+    player[websocket] = str(pool[-1])
     print(games)
 
     await websocket.send(str(pool[-1]))
 
     try:
         async for data in websocket:
-            player = not player
+            colour = player[websocket]
+            # print(websocket, colour, not int(colour))
             move = demjson.decode(data)["move"]
-            print(move)
             test_pgn.append(move)
-
+            print(test_pgn)
             if game.analyse(test_pgn) == True:
-                pgn = test_pgn
-                print(pgn)
-                await games[str(int(player))][-1].send("{move: true}")
+                pgn.append(move)
+                await games[str(int(not int(colour)))][-1].send("{\"move\": %s}" % move)
+            elif game.analyse(test_pgn) == False:
+                test_pgn.pop(-1)
+                await games[str(int(colour))][-1].send("{\"invalid\": %s}" % pgn)
+            game.reset()
+            # print(test_pgn)
+
 
     finally:
         connected.remove(websocket)
