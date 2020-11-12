@@ -24,12 +24,12 @@ socket.addEventListener("message", function (event) {
 	} else if (event.data.includes("invalid")) {
 		a = JSON.parse(event.data)
 		console.log(a.invalid)
-		// change_board(event.data.invalid)
+		change_board(event.data.invalid)
 		set_token(true);
 	} else if (event.data.includes("move")) {
 		ob = JSON.parse(event.data)
 		console.log(ob.move)
-		// change_board(event.data.move)
+		change_board(event.data.move)
 		set_token(true);
 	} else {
 		console.log(event.data);

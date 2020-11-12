@@ -30,8 +30,9 @@ for (var i = 0; i < 64; i++) {
 }
 
 // pieces
-function assign(name, e, link, c) {
+function assign(name, e, link, c, id) {
 	var piece = document.createElement("div");
+	piece.classList.add("piece")
 	piece.className = "piece";
 	if (colour == "b") {
 		piece.style.transform = "rotate(180deg)";
@@ -42,12 +43,14 @@ function assign(name, e, link, c) {
 	icon.className = "piece-img";
 	icon.draggable == "false";
 	if (colour == c) {
-		piece.className = "own-piece";
+		piece.classList.remove("piece")
+		piece.classList.add("own-piece")
 	}
 	piece.appendChild(icon);
 	piece.ondragstart = dragStart;
 	piece.ondragend = dragEnd;
 	document.getElementById(e).appendChild(piece);
+	piece.classList.add(id);
 }
 
 function set_board() {
@@ -248,11 +251,13 @@ function set_board() {
 	);
 }
 
+document.getElementsByTagName
 function change_board(pgn) {
-	pieces = document.getElementsByClassName("pieces")
-	for (i = 0; i < pgn.length; i++) {
-		console.log(document.getElementById(pgn[i][0]));
+	pieces = document.getElementsByClassName('own-piece')
+	for(i=0; i<pieces.length; i++){
+		console.log(pieces[i].id)
 	}
+	console.log(pieces)
 }
 
 move = "";
