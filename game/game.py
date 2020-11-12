@@ -81,29 +81,38 @@ class Game:
 
     def analyse(self, pgn):
         position = self.pgn_parser(pgn)
+        parsed_moves = []
         for moves in position:
             a = moves[0]
             b = moves[-1]
+            a_test = self.move(a[-2:], "w", a)
+            b_test = self.move(b[-2:], "b", b)
             # self.board.show()
-            if self.move(a[-2:], "w", a) == False:
-                return False
-            if self.move(b[-2:], "b", b) == False:
-                return False
+            if a_test[0] == False:
+                return [False]
+            if b_test[0] == False:
+                return [False]
             # self.board.show()
-        return True
+            parsed_moves.append([a, a_test[-1]])
+            parsed_moves.append([b, b_test[-1]])
+        if position[-1][-1] == "OG":
+            parsed_moves.pop(-1)
+        return [True, parsed_moves]
 
     def move(self, location, colour, move):
+        parsed_moves = ""
         l = "abcdefgh"
         op_colour = "w" if "w" != colour else "b"
         if move == "OG":
-            return
+            return [True]
         possible_moves = flatten(self.board.allMoves(colour))
+        print(move, possible_moves)
 
         for e in range(len(possible_moves)):
             if move == possible_moves[e]:
                 break
             if e == len(possible_moves)-1:
-                return False
+                return [False]
 
         for ids in self.board.allMoves(colour):
             if move in self.board.allMoves(colour)[ids]:
@@ -130,6 +139,7 @@ class Game:
                     )
                 else:
                     self.board.move(self.board.locate(ids), location)
+                    parsed_moves = ids
             # else:
             #     print(move)
             #     return False
@@ -137,9 +147,9 @@ class Game:
         # self.board.show()
         # print(move)
         if self.board.inCheck(colour, self.board.allMoves(op_colour)) == False:
-            return True
+            return [1, parsed_moves]
         else:
-            return False
+            return [0]
         # elif len(location[1]) > 1:
         #     self.board.move(location, piece)
         # else:

@@ -13,6 +13,11 @@
 	cursor: pointer;
 }
 
+.own-piece {
+	position: relative;
+	cursor: pointer;
+}
+
 .piece-img {
 	height: 100px;
 	width: 100px;

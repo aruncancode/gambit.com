@@ -3,6 +3,7 @@ import websockets
 from game import *
 import demjson
 import random
+import json
 
 
 connected = set()
@@ -31,12 +32,17 @@ async def server(websocket, path):
             move = demjson.decode(data)["move"]
             test_pgn.append(move)
             print(test_pgn)
-            if game.analyse(test_pgn) == True:
+            if game.analyse(test_pgn)[0] == True:
+                game.reset()
+                # move = game.analyse(test_pgn)[-1][-1]
+                move = game.analyse(test_pgn)[-1][-1]
+                move[0] = move[0][-2:]
                 pgn.append(move)
-                await games[str(int(not int(colour)))][-1].send("{\"move\":\"%s\"}" % move)
-            elif game.analyse(test_pgn) == False:
+                await games[str(int(not int(colour)))][-1].send(json.dumps({"move" : move}))
+            elif game.analyse(test_pgn)[0] == False:
                 test_pgn.pop(-1)
-                await games[str(int(colour))][-1].send("{\"invalid\": %s}" % pgn)
+                await games[str(int(colour))][-1].send(json.dumps({"invalid" : pgn}))
+                print("invalid")
             game.reset()
             # print(test_pgn)
 

@@ -8,32 +8,11 @@
 
 setTimeout(function () {
 	set_board();
-}, 1000);
-
-colour = localStorage.getItem("colour");
-if (colour == "b") {
-	document.getElementById("board").style.transform = "rotate(180deg)";
-}
-
-for (var i = 0; i < 64; i++) {
-	a = document.createElement("div");
-	a.style.backgroundColor =
-		parseInt(i / 8 + i - 1) % 2 == 0 ? "#ababab" : "white";
-	a.className = "square";
-	letter = "abcdefgh"[i % 8];
-	number = 9 - Math.ceil((i + 1) / 8);
-	a.id = letter + number;
-	a.ondragenter = dragEnter;
-	a.ondrop = dragDrop;
-	a.ondragover = dragOver;
-	document.getElementById("board").appendChild(a);
-}
+}, 200);
 
 // pieces
 function assign(name, e, link, c, id) {
 	var piece = document.createElement("div");
-	piece.classList.add("piece")
-	piece.className = "piece";
 	if (colour == "b") {
 		piece.style.transform = "rotate(180deg)";
 	}
@@ -43,8 +22,9 @@ function assign(name, e, link, c, id) {
 	icon.className = "piece-img";
 	icon.draggable == "false";
 	if (colour == c) {
-		piece.classList.remove("piece")
-		piece.classList.add("own-piece")
+		piece.classList.add("own-piece");
+	} else {
+		piece.classList.add("piece");
 	}
 	piece.appendChild(icon);
 	piece.ondragstart = dragStart;
@@ -54,210 +34,263 @@ function assign(name, e, link, c, id) {
 }
 
 function set_board() {
+	colour = localStorage.getItem("colour");
+	if (colour == "b") {
+		document.getElementById("board").style.transform = "rotate(180deg)";
+	}
+
+	for (var i = 0; i < 64; i++) {
+		a = document.createElement("div");
+		a.style.backgroundColor =
+			parseInt(i / 8 + i - 1) % 2 == 0 ? "#ababab" : "white";
+		a.className = "square";
+		letter = "abcdefgh"[i % 8];
+		number = 9 - Math.ceil((i + 1) / 8);
+		a.id = letter + number;
+		a.ondragenter = dragEnter;
+		a.ondrop = dragDrop;
+		a.ondragover = dragOver;
+		document.getElementById("board").appendChild(a);
+	}
+
 	assign(
 		"R",
 		"a8",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Chess_rdt45.svg/1024px-Chess_rdt45.svg.png",
-		"b"
+		"b",
+		"ROOKB1"
 	);
 	assign(
 		"N",
 		"b8",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Chess_ndt45.svg/1024px-Chess_ndt45.svg.png",
-		"b"
+		"b",
+		"KNIGHTB1"
 	);
 	assign(
 		"B",
 		"c8",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Chess_bdt45.svg/1024px-Chess_bdt45.svg.png",
-		"b"
+		"b",
+		"BISHOPB1"
 	);
 	assign(
 		"Q",
 		"d8",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Chess_qdt45.svg/800px-Chess_qdt45.svg.png",
-		"b"
+		"b",
+		"QUEENB"
 	);
 	assign(
 		"K",
 		"e8",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Chess_kdt45.svg/800px-Chess_kdt45.svg.png",
-		"b"
+		"b",
+		"KINGB"
 	);
 	assign(
 		"B",
 		"f8",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Chess_bdt45.svg/1024px-Chess_bdt45.svg.png",
-		"b"
+		"b",
+		"BISHOPB2"
 	);
 	assign(
 		"N",
 		"g8",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Chess_ndt45.svg/1024px-Chess_ndt45.svg.png",
-		"b"
+		"b",
+		"KNIGHTB2"
 	);
 	assign(
 		"R",
 		"h8",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Chess_rdt45.svg/1024px-Chess_rdt45.svg.png",
-		"b"
+		"b",
+		"ROOKB2"
 	);
 
 	assign(
-		"",
+		"a",
 		"a7",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Chess_pdt45.svg/1024px-Chess_pdt45.svg.png",
-		"b"
+		"b",
+		"PAWNBA"
 	);
 	assign(
-		"",
+		"b",
 		"b7",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Chess_pdt45.svg/1024px-Chess_pdt45.svg.png",
-		"b"
+		"b",
+		"PAWNBB"
 	);
 	assign(
-		"",
+		"c",
 		"c7",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Chess_pdt45.svg/1024px-Chess_pdt45.svg.png",
-		"b"
+		"b",
+		"PAWNBC"
 	);
 	assign(
-		"",
+		"d",
 		"d7",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Chess_pdt45.svg/1024px-Chess_pdt45.svg.png",
-		"b"
+		"b",
+		"PAWNBD"
 	);
 	assign(
-		"",
+		"e",
 		"e7",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Chess_pdt45.svg/1024px-Chess_pdt45.svg.png",
-		"b"
+		"b",
+		"PAWNBE"
 	);
 	assign(
-		"",
+		"f",
 		"f7",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Chess_pdt45.svg/1024px-Chess_pdt45.svg.png",
-		"b"
+		"b",
+		"PAWNBF"
 	);
 	assign(
-		"",
+		"g",
 		"g7",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Chess_pdt45.svg/1024px-Chess_pdt45.svg.png",
-		"b"
+		"b",
+		"PAWNBG"
 	);
 	assign(
-		"",
+		"h",
 		"h7",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Chess_pdt45.svg/1024px-Chess_pdt45.svg.png",
-		"b"
+		"b",
+		"PAWNBH"
 	);
 
 	assign(
 		"R",
 		"a1",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Chess_rlt45.svg/1024px-Chess_rlt45.svg.png",
-		"w"
+		"w",
+		"ROOKW1"
 	);
 	assign(
 		"N",
 		"b1",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Chess_nlt45.svg/1024px-Chess_nlt45.svg.png",
-		"w"
+		"w",
+		"KNIGHTW1"
 	);
 	assign(
 		"B",
 		"c1",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Chess_blt45.svg/1024px-Chess_blt45.svg.png",
-		"w"
+		"w",
+		"BISHOPW1"
 	);
 	assign(
 		"Q",
 		"d1",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Chess_qlt45.svg/1024px-Chess_qlt45.svg.png",
-		"w"
+		"w",
+		"QUEENW"
 	);
 	assign(
 		"K",
 		"e1",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Chess_klt45.svg/1024px-Chess_klt45.svg.png",
-		"w"
+		"w",
+		"KINGW"
 	);
 	assign(
 		"B",
 		"f1",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Chess_blt45.svg/1024px-Chess_blt45.svg.png",
-		"w"
+		"w",
+		"BISHOPW2"
 	);
 	assign(
 		"N",
 		"g1",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Chess_nlt45.svg/1024px-Chess_nlt45.svg.png",
-		"w"
+		"w",
+		"KNIGHTW2"
 	);
 	assign(
 		"R",
 		"h1",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Chess_rlt45.svg/1024px-Chess_rlt45.svg.png",
-		"w"
+		"w",
+		"ROOKW2"
 	);
 
 	assign(
-		"",
+		"a",
 		"a2",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Chess_plt45.svg/1024px-Chess_plt45.svg.png",
-		"w"
+		"w",
+		"PAWNWA"
 	);
 	assign(
-		"",
+		"b",
 		"b2",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Chess_plt45.svg/1024px-Chess_plt45.svg.png",
-		"w"
+		"w",
+		"PAWNWB"
 	);
 	assign(
-		"",
+		"c",
 		"c2",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Chess_plt45.svg/1024px-Chess_plt45.svg.png",
-		"w"
+		"w",
+		"PAWNWC"
 	);
 	assign(
-		"",
+		"d",
 		"d2",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Chess_plt45.svg/1024px-Chess_plt45.svg.png",
-		"w"
+		"w",
+		"PAWNWD"
 	);
 	assign(
-		"",
+		"e",
 		"e2",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Chess_plt45.svg/1024px-Chess_plt45.svg.png",
-		"w"
+		"w",
+		"PAWNWE"
 	);
 	assign(
-		"",
+		"f",
 		"f2",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Chess_plt45.svg/1024px-Chess_plt45.svg.png",
-		"w"
+		"w",
+		"PAWNWF"
 	);
 	assign(
-		"",
+		"g",
 		"g2",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Chess_plt45.svg/1024px-Chess_plt45.svg.png",
-		"w"
+		"w",
+		"PAWNWG"
 	);
 	assign(
-		"",
+		"h",
 		"h2",
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Chess_plt45.svg/1024px-Chess_plt45.svg.png",
-		"w"
+		"w",
+		"PAWNWH"
 	);
 }
 
-document.getElementsByTagName
 function change_board(pgn) {
-	pieces = document.getElementsByClassName('own-piece')
-	for(i=0; i<pieces.length; i++){
-		console.log(pieces[i].id)
+	square = document.getElementById(pgn[0]);
+	piece = document.getElementsByClassName(pgn[1])[0];
+	if (square.hasChildNodes()) {
+		square.removeChild(square.lastElementChild);
+		square.append(piece);
+	} else {
+		square.append(piece);
 	}
-	console.log(pieces)
 }
 
 move = "";
@@ -277,14 +310,22 @@ function dragEnter() {
 function dragDrop() {
 	time = 500;
 	a = get_token();
-	if (a == true && moved_piece.className == 'own-piece') {
+	if (a == true && moved_piece.classList.contains("own-piece")) {
 		if (this.hasChildNodes()) {
 			this.removeChild(this.lastElementChild);
 			this.append(moved_piece);
+			move = moved_piece.id + this.id;
+			if (JSON.stringify(moved_piece.classList).includes("PAWN")) {
+				moved_piece.id = this.id[0];
+				console.log(moved_piece.id)
+			}
 		} else {
 			this.append(moved_piece);
+			move = moved_piece.id + this.id;
+			if (JSON.stringify(moved_piece.classList).includes("PAWN")) {
+				move = this.id;
+			}
 		}
-		move = moved_piece.id + this.id;
 		onmove(move, time, colour);
 		// console.log(pgn)
 	} else {
