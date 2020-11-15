@@ -137,6 +137,8 @@ class Game:
                     parsed_moves.append("ROOK" + colour.upper() + "1")
                 else:
                     self.board.move(self.board.locate(ids), location)
+                    if "KING" in ids:
+                        self.board.get_piece(ids).hasMoved = True
                     parsed_moves = ids
             # else:
             #     print(move)
@@ -174,6 +176,9 @@ class Game:
     # def validPosition(self):
     #     ok = 0
     #     return ok
+
+    def get(self,id):
+        return self.board.get_piece(id)
 
 
 def flatten(dict):
