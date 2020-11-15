@@ -51,12 +51,6 @@ class Board:
 
 
     def move(self,initial_location, final_location):
-        # print(initial_location, final_location)
-
-        #killing the piece that is being captured if so
-        # if self.board[8-int(final_location[1])][l.index(final_location[0])] !=0:
-        #     self.board[8-int(final_location[1])][l.index(final_location[0])]
-
         #setting final location of piece to contain the piece object
         self.board[8-int(final_location[1])][l.index(final_location[0])]=self.board[8-int(initial_location[1])][l.index(initial_location[0])]
         self.board[8-int(final_location[1])][l.index(final_location[0])].updateLocation(final_location)
@@ -73,6 +67,11 @@ class Board:
                if square != 0 and square.id == id:
                    return l[square_i]+str(8-row_i) 
 
+    def get_piece(self, id):
+        for row_i, row in enumerate(self.board):
+            for square_i, square in enumerate(row):
+               if square != 0 and square.id == id:
+                   return square 
 
     def allMoves(self, colour):
         board = self.board
@@ -83,20 +82,6 @@ class Board:
                 if board[i][e] != 0:
                     moves[board[i][e].colour][board[i][e].id] = (board[i][e].possibleMoves(board))
         
-        # castles
-        # for i in range(8):
-        #     for e in range(8):
-        #         if board[i][e] !=0 and board[i][e].id == "KING" + colour.upper() and board[i][e].hasMoved == False:
-        #             if board[i][e+1] ==0 and board[i][e+2] ==0:
-        #                 moves[colour]["KING"+colour.upper()].append("O-O")
-        #                 break
-
-        # for e in moves[colour]:
-        #     for move in e:
-        #         self.move(self.locate(e), move)
-        #         if self.inCheck(colour, moves[op_colour]) == True:
-        #             e.remove(move)
-
         return moves[colour]
 
     

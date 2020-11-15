@@ -22,20 +22,20 @@ socket.addEventListener("message", function (event) {
 			// token = true;
 		}
 	} else if (event.data.includes("invalid")) {
-		document.getElementById("board").remove()
-		a = document.createElement("div")
-		a.id = "board"
-		document.body.appendChild(a)
-		set_board()
-		ob = JSON.parse(event.data)
-		for(c of ob.invalid){
-			change_board(c)
+		document.getElementById("board").remove();
+		a = document.createElement("div");
+		a.id = "board";
+		document.body.appendChild(a);
+		set_board();
+		ob = JSON.parse(event.data);
+		for (c of ob.invalid) {
+			change_board(c);
 		}
 		set_token(true);
 	} else if (event.data.includes("move")) {
-		ob = JSON.parse(event.data)
-		console.log(ob.move)
-		change_board(ob.move)
+		ob = JSON.parse(event.data);
+		console.log(ob.move);
+		change_board(ob.move);
 		set_token(true);
 	} else {
 		console.log(event.data);

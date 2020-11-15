@@ -28,13 +28,11 @@ async def server(websocket, path):
     try:
         async for data in websocket:
             colour = player[websocket]
-            # print(websocket, colour, not int(colour))
             move = demjson.decode(data)["move"]
             test_pgn.append(move)
             print(test_pgn)
             if game.analyse(test_pgn)[0] == True:
                 game.reset()
-                # move = game.analyse(test_pgn)[-1][-1]
                 move = game.analyse(test_pgn)[-1][-1]
                 if move[0] in ["O-O", "O-O-O"]:
                     pass
@@ -47,9 +45,6 @@ async def server(websocket, path):
                 await games[str(int(colour))][-1].send(json.dumps({"invalid" : pgn}))
                 print("invalid")
             game.reset()
-            # print(test_pgn)
-
-
     finally:
         connected.remove(websocket)
 
