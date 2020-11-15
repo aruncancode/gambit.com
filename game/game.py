@@ -87,12 +87,10 @@ class Game:
             b = moves[-1]
             a_test = self.move(a[-2:], "w", a)
             b_test = self.move(b[-2:], "b", b)
-            # self.board.show()
             if a_test[0] == False:
                 return [False]
             if b_test[0] == False:
                 return [False]
-            # self.board.show()
             parsed_moves.append([a, a_test[-1]])
             parsed_moves.append([b, b_test[-1]])
         if position[-1][-1] == "OG":
@@ -100,13 +98,12 @@ class Game:
         return [True, parsed_moves]
 
     def move(self, location, colour, move):
-        parsed_moves = ""
+        parsed_moves = []
         l = "abcdefgh"
         op_colour = "w" if "w" != colour else "b"
         if move == "OG":
             return [True]
         possible_moves = flatten(self.board.allMoves(colour))
-        print(move, possible_moves)
 
         for e in range(len(possible_moves)):
             if move == possible_moves[e]:
@@ -123,20 +120,21 @@ class Game:
                         king_location,
                         l[(int(l.index(king_location[0])) + 2)] + king_location[1],
                     )
+                    parsed_moves.append(ids)
                     self.board.move(
                         rook_location,
                         l[(int(l.index(rook_location[0])) - 2)] + rook_location[1],
                     )
+                    parsed_moves.append("ROOK" + colour.upper() + "2")
                 elif move == "O-O-O":
                     rook_location = self.board.locate("ROOK" + colour.upper() + "1")
                     self.board.move(
                         king_location,
-                        l[(int(l.index(king_location[0])) - 2)] + king_location[1],
+                        l[(int(l.index(king_location[0])) - 2)] + king_location[1]
                     )
-                    self.board.move(
-                        rook_location,
-                        l[(int(l.index(rook_location[0])) + 3)] + rook_location[1],
-                    )
+                    parsed_moves.append(ids)
+                    self.board.move(rook_location, l[(int(l.index(rook_location[0])) + 3)] + rook_location[1])
+                    parsed_moves.append("ROOK" + colour.upper() + "1")
                 else:
                     self.board.move(self.board.locate(ids), location)
                     parsed_moves = ids

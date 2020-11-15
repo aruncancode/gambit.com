@@ -36,7 +36,10 @@ async def server(websocket, path):
                 game.reset()
                 # move = game.analyse(test_pgn)[-1][-1]
                 move = game.analyse(test_pgn)[-1][-1]
-                move[0] = move[0][-2:]
+                if move[0] in ["O-O", "O-O-O"]:
+                    pass
+                else:
+                    move[0] = move[0][-2:]
                 pgn.append(move)
                 await games[str(int(not int(colour)))][-1].send(json.dumps({"move" : move}))
             elif game.analyse(test_pgn)[0] == False:

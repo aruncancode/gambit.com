@@ -31,6 +31,10 @@ function assign(name, e, link, c, id) {
 	piece.ondragend = dragEnd;
 	document.getElementById(e).appendChild(piece);
 	piece.classList.add(id);
+
+	if (piece.id == "K") {
+		piece.classList.add("notMoved");
+	}
 }
 
 function set_board() {
@@ -283,13 +287,43 @@ function set_board() {
 }
 
 function change_board(pgn) {
-	square = document.getElementById(pgn[0]);
-	piece = document.getElementsByClassName(pgn[1])[0];
-	if (square.hasChildNodes()) {
-		square.removeChild(square.lastElementChild);
-		square.append(piece);
+	colour = localStorage.getItem("colour");
+	if (colour == "w") {
+		colour = "b";
+		rank = "8";
+	} else if (colour == "b") {
+		colour = "w";
+		rank = "1";
+	}
+	if (pgn[0] == "O-O") {
+		king = document.getElementsByClassName(pgn[1][0]);
+		king_square = document.getElementById("g" + rank);
+		king_square.appendChild(king[0]);
+
+		rook = document.getElementsByClassName(pgn[1][1]);
+		rook_square = document.getElementById("f" + rank);
+		rook_square.append(rook[0]);
+
+		king[0].classList.remove("notMoved");
+	} else if (pgn[0] == "O-O-O") {
+		king = document.getElementsByClassName(pgn[1][0]);
+		king_square = document.getElementById("c" + rank);
+		king_square.appendChild(king[0]);
+
+		rook = document.getElementsByClassName(pgn[1][1]);
+		rook_square = document.getElementById("d" + rank);
+		rook_square.append(rook[0]);
+
+		king[0].classList.remove("notMoved");
 	} else {
-		square.append(piece);
+		square = document.getElementById(pgn[0]);
+		piece = document.getElementsByClassName(pgn[1])[0];
+		if (square.hasChildNodes()) {
+			square.removeChild(square.lastElementChild);
+			square.append(piece);
+		} else {
+			square.append(piece);
+		}
 	}
 }
 
@@ -299,7 +333,6 @@ pgn = [];
 
 function dragStart() {
 	moved_piece = this;
-	// console.log(moved_piece)
 }
 
 function dragEnd() {}
@@ -317,13 +350,31 @@ function dragDrop() {
 			move = moved_piece.id + this.id;
 			if (JSON.stringify(moved_piece.classList).includes("PAWN")) {
 				moved_piece.id = this.id[0];
-				console.log(moved_piece.id)
+				console.log(moved_piece.id);
 			}
 		} else {
 			this.append(moved_piece);
 			move = moved_piece.id + this.id;
 			if (JSON.stringify(moved_piece.classList).includes("PAWN")) {
 				move = this.id;
+			} else if (
+				(move == "Kg8" || move == "Kg1") &&
+				moved_piece.className.includes("notMoved")
+			) {
+				rook = document.getElementById("h" + move[2]).firstElementChild;
+				document.getElementById("h" + move[2]).removeChild;
+				document.getElementById("f" + move[2]).appendChild(rook);
+				move = "O-O";
+				moved_piece.classList.remove("notMoved");
+			} else if (
+				(move == "Kc1" || move == "Kc8") &&
+				moved_piece.className.includes("notMoved")
+			) {
+				rook = document.getElementById("a" + move[2]).firstElementChild;
+				document.getElementById("c" + move[2]).removeChild;
+				document.getElementById("d" + move[2]).appendChild(rook);
+				move = "O-O-O";
+				moved_piece.classList.remove("notMoved");
 			}
 		}
 		onmove(move, time, colour);
