@@ -83,8 +83,6 @@ class Board:
                     moves[board[i][e].colour][board[i][e].id] = (board[i][e].possibleMoves(board))
         
         return moves[colour]
-
-    
     
     def inCheck(self, colour, opponent_moves):
         king_location = self.locate("KING" + colour.upper())

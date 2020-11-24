@@ -31,7 +31,7 @@ async def server(websocket, path):
             move = demjson.decode(data)["move"]
             test_pgn.append(move)
             print(test_pgn)
-            if game.analyse(test_pgn)[0] == True:
+            if game.analyse(test_pgn)[0] == 1:
                 game.reset()
                 move = game.analyse(test_pgn)[-1][-1]
                 if move[0] in ["O-O", "O-O-O"]:
@@ -40,10 +40,20 @@ async def server(websocket, path):
                     move[0] = move[0][-2:]
                 pgn.append(move)
                 await games[str(int(not int(colour)))][-1].send(json.dumps({"move" : move}))
-            elif game.analyse(test_pgn)[0] == False:
+            elif game.analyse(test_pgn)[0] == 0:
                 test_pgn.pop(-1)
                 await games[str(int(colour))][-1].send(json.dumps({"invalid" : pgn}))
                 print("invalid")
+            elif game.analyse(test_pgn)[0] == 2:
+                print("checkmate")
+                game.reset()
+                move = game.analyse(test_pgn)[-1][-1]
+                if move[0] in ["O-O", "O-O-O"]:
+                    pass
+                else:
+                    move[0] = move[0][-2:]
+                pgn.append(move)
+                await games[str(int(not int(colour)))][-1].send(json.dumps({"checkmate" : move}))
             game.reset()
     finally:
         connected.remove(websocket)

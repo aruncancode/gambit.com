@@ -79,7 +79,9 @@ class Game:
                 out.append(cur)
         return out
 
-    def analyse(self, pgn):
+    def analyse(self, pgn, board=None):
+        if board == None:
+            board=self.board
         position = self.pgn_parser(pgn)
         parsed_moves = []
         for moves in position:
@@ -87,66 +89,70 @@ class Game:
             b = moves[-1]
             a_test = self.move(a[-2:], "w", a)
             b_test = self.move(b[-2:], "b", b)
-            if a_test[0] == False:
-                return [False]
-            if b_test[0] == False:
-                return [False]
+            if a_test[0] == 0:
+                return [0]
+            if b_test[0] == 0:
+                return [0]
             parsed_moves.append([a, a_test[-1]])
             parsed_moves.append([b, b_test[-1]])
         if position[-1][-1] == "OG":
             parsed_moves.pop(-1)
-        return [True, parsed_moves]
+        return [1, parsed_moves]
 
-    def move(self, location, colour, move):
+    def move(self, location, colour, move, board):
         parsed_moves = []
         l = "abcdefgh"
         op_colour = "w" if "w" != colour else "b"
         if move == "OG":
-            return [True]
-        possible_moves = flatten(self.board.allMoves(colour))
+            return [1]
+        possible_moves = flatten(board.allMoves(colour))
 
         for e in range(len(possible_moves)):
             if move == possible_moves[e]:
                 break
             if e == len(possible_moves)-1:
-                return [False]
+                return [0]
 
-        for ids in self.board.allMoves(colour):
-            if move in self.board.allMoves(colour)[ids]:
-                king_location = self.board.locate("KING" + colour.upper())
+        for ids in board.allMoves(colour):
+            if move in board.allMoves(colour)[ids]:
+                king_location = board.locate("KING" + colour.upper())
                 if move == "O-O":
-                    rook_location = self.board.locate("ROOK" + colour.upper() + "2")
-                    self.board.move(
+                    rook_location = board.locate("ROOK" + colour.upper() + "2")
+                    board.move(
                         king_location,
                         l[(int(l.index(king_location[0])) + 2)] + king_location[1],
                     )
                     parsed_moves.append(ids)
-                    self.board.move(
+                    board.move(
                         rook_location,
                         l[(int(l.index(rook_location[0])) - 2)] + rook_location[1],
                     )
                     parsed_moves.append("ROOK" + colour.upper() + "2")
                 elif move == "O-O-O":
-                    rook_location = self.board.locate("ROOK" + colour.upper() + "1")
-                    self.board.move(
+                    rook_location = board.locate("ROOK" + colour.upper() + "1")
+                    board.move(
                         king_location,
                         l[(int(l.index(king_location[0])) - 2)] + king_location[1]
                     )
                     parsed_moves.append(ids)
-                    self.board.move(rook_location, l[(int(l.index(rook_location[0])) + 3)] + rook_location[1])
+                    board.move(rook_location, l[(int(l.index(rook_location[0])) + 3)] + rook_location[1])
                     parsed_moves.append("ROOK" + colour.upper() + "1")
                 else:
-                    self.board.move(self.board.locate(ids), location)
+                    board.move(board.locate(ids), location)
                     if "KING" in ids:
-                        self.board.get_piece(ids).hasMoved = True
+                        board.get_piece(ids).hasMoved = True
                     parsed_moves = ids
             # else:
             #     print(move)
             #     return False
 
-        # self.board.show()
+        # board.show()
         # print(move)
-        if self.board.inCheck(colour, self.board.allMoves(op_colour)) == False:
+        print(move , board.allMoves(op_colour))
+        if board.inCheck(colour, board.allMoves(op_colour)) == False:
+            if board.inCheck(op_colour, board.allMoves(colour)) == True:
+                if len(self.kingMoves(pgn[:-1], op_colour, flatten(board.allMoves(op_colour)))) == 0:
+                    return [2, parsed_moves]
             return [1, parsed_moves]
         else:
             return [0]
@@ -155,27 +161,21 @@ class Game:
         # else:
         #     self.board.move(location, piece)
 
-    # def inCheck(self, colour):
-    #     opponent_colour = "b" if colour == "w" else "w"
-    #     king_location = self.board.locate("KING" + colour.upper())
-    #     opponent_moves = self.board.allMoves(opponent_colour)
-    #     for pieces in opponent_moves:
-    #         for move in opponent_moves[pieces]:
-    #             if king_location in move:
-    #                 return True
-    #     return False
+    def kingMoves(self, pgn, colour, possible_moves):
+        # colour refers to the colour of the player we're checking for checkmate
+        # possible moves refer to the moves of the player with the same colour
+        board2 = Board()
+        king_moves = []
 
-    # def ischeckMate(self):
-    #     ok = 0
-    #     return ok
+        for move in possible_moves:
+            self.analyse(pgn, board=board2)
+            if self.board.inCheck(colour, self.board.allMoves(op_colour)):
+                self.reset()
+                possible_moves.remove(move)
+            else:
+                king_moves.append(move)
+            
 
-    # def isStalemate(self):
-    #     ok = 0
-    #     return ok
-
-    # def validPosition(self):
-    #     ok = 0
-    #     return ok
 
     def get(self,id):
         return self.board.get_piece(id)

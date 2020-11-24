@@ -156,12 +156,14 @@ class King(Piece):
         #Castling
         if self.hasMoved == False:
             #short
-            if board[y][5]==0 and board[y][6]==0 and board[y][7].type == "Rook":
-                moves.append("O-O")
+            if board[y][5]==0 and board[y][6]==0 and board[y][7] != 0:
+                if board[y][7].type == "Rook":
+                    moves.append("O-O")
 
             #long
-            if board[y][1]==0 and board[y][2]==0 and board[y][3] ==0 and board[y][0].type == "Rook":
-                moves.append("O-O-O")
+            if board[y][1]==0 and board[y][2]==0 and board[y][3] ==0 and board[y][0] !=0:
+                if board[y][0].type == "Rook":
+                    moves.append("O-O-O")
 
         return moves
 
