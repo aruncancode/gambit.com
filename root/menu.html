@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="./css/site.css" />
+
+		<title>Document</title>
+	</head>
+	<body>
+		<div class="container">
+			<h1 id="welcomeTag">Welcome,</h1>
+			<h2>Please select a mode</h2>
+
+			<input
+				type="button"
+				value="Bullet"
+				onclick="selectMode(this.value);"
+			/>
+			<input
+				type="button"
+				value="Blitz"
+				onclick="selectMode(this.value);"
+			/>
+			<input
+				type="button"
+				value="Rapid"
+				onclick="selectMode(this.value);"
+			/>
+		</div>
+	</body>
+
+	<script>
+		$("#welcomeTag").append(" " + localStorage.getItem("username"));
+		function selectMode(e) {
+			socket.send(e);
+			window.location.replace("game.html");
+		}
+
+		const socket = new WebSocket("ws://localhost:4000");
+
+		socket.addEventListener("open", function (event) {
+			console.log("Connected to server");
+		});
+		socket.addEventListener("close", function (event) {
+			console.log("Disconnected from server");
+		});
+		socket.addEventListener("message", function (event) {
+            ob = JSON.parse(event.data);
+            localStorage.setItem("player_id", ob.id[0])
+            localStorage.setItem("game_id", ob.id[1])
+		});
+		setTimeout(function () {
+			socket.send(localStorage.getItem("username"));
+		}, 1000);
+	</script>
+</html>

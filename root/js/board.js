@@ -8,7 +8,8 @@
 
 setTimeout(function () {
 	set_board();
-}, 200);
+
+}, 500);
 
 // pieces
 function assign(name, e, link, c, id) {

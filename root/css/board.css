@@ -28,3 +28,9 @@ div {
 	height: 100px;
 	float: left;
 }
+#opponentName {
+	display: inline;
+}
+#name {
+	padding-top: 50%;
+}
