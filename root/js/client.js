@@ -39,9 +39,9 @@ socket.addEventListener("message", function (event) {
 		set_token(true);} 
 	else if (event.data.includes("checkmate")){
 		ob = JSON.parse(event.data);
-		console.log(ob.move);
+		console.log(ob.checkmate);
 		console.log("Checkmate")
-		change_board(ob.move);
+		change_board(ob.checkmate);
 	}
 	else {
 		console.log(event.data);

@@ -85,6 +85,8 @@ class Board:
         return moves[colour]
     
     def inCheck(self, colour, opponent_moves):
+        #which colour is in check
+        #opponent moves
         king_location = self.locate("KING" + colour.upper())
         for pieces in opponent_moves:
             for move in opponent_moves[pieces]:
@@ -98,3 +100,6 @@ class Board:
             print(e)
             # print("\n")
         print(" ")
+    
+    def reset(self):
+        self.__init__()
