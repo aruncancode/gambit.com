@@ -59,18 +59,6 @@ import uuid
 #         connected.remove(websocket)
 
 
-def sel_game(type):
-    global games
-    if any(e.type == str(type) for e in games):
-        if len([e for e in games if e.pool<2]) > 0:
-            game = [e for e in games if e.pool<2][-1]
-            return game
-    else:
-        game_id = uuid.uuid4()
-        game = CurrentGame(type, game_id)
-        games.append(game)
-        return game
-
 
 player_pool = set()
 connected = set()
@@ -89,13 +77,21 @@ async def player_pool_server(websocket, path):
     try:
         async for name in websocket:
             if any(x.websocket == websocket for x in players):
-                print(name)
+                print("arlready exists")
+                if len([str(e.type) == str(name) for e in games]) >0:
+                    if len([e for e in games if e.pool<2]) > 0:
+                        g = [e for e in games if e.pool<2][-1]
+                else:
+                    game_id = uuid.uuid4()
+                    g = CurrentGame(name, game_id)
+                    games.append(g)
+                print("g", g)
                 player =[e for e in players if e.websocket == websocket][-1]
-                g = sel_game(name)
                 g.add_player(player)
                 [e for e in players if e.websocket == websocket][-1].add_game(g.game_id)
                 s = [str(player.player_id), str(g.game_id)]
                 await websocket.send(json.dumps({"id" : s}))
+            
             else:
                 print(name)
                 i = uuid.uuid4()
@@ -103,7 +99,8 @@ async def player_pool_server(websocket, path):
                 players.append(p)
 
     finally:
-        print(games)
+        # print("Games" , games)
+        # print("Players" , players)
         player_pool.remove(websocket)
 
 
@@ -122,13 +119,13 @@ async def server(websocket, path):
                 game_ob = [e for e in games if str(game_id) == str(e.game_id)][-1]
                 player = [e for e in players if str(e.player_id) == str(player_id)][-1]
                 colour = player.colour
-                op_colour = "w" if colour == "b" else "b"
-                pgn = game_ob.pgn
-                test_pgn = pgn
+                op_colour = int(not colour)
                 move = demjson.decode(data)["move"]
-                test_pgn.append(move)
-                print(test_pgn)
-                t = game.analyse(test_pgn)
+                game_ob.test_pgn.append(move)
+                print(game_ob.test_pgn)
+                t = game.analyse(game_ob.test_pgn)
+                print(game_ob.test_pgn)
+
                 game.reset()
                 if t[0] == 1:
                     move = t[-1][-1]
@@ -137,10 +134,10 @@ async def server(websocket, path):
                     else:
                         move[0] = move[0][-2:]
                     game_ob.pgn.append(move)
-                    print("valid")
+                    # print("valid")
                     await game_ob.get_opponent(colour).send(json.dumps({"move" : move}))
                 elif t[0]== 2:
-                    print("checkmate")
+                    # print("checkmate")
                     move = t[-1][-1]
                     if move[0] in ["O-O", "O-O-O"]:
                         pass
@@ -148,10 +145,13 @@ async def server(websocket, path):
                         move[0] = move[0][-2:]
                     game_ob.pgn.append(move)
                     await game_ob.get_opponent(colour).send(json.dumps({"checkmate" : move}))
+                    games.remove(game_ob)
+                    for e in game_ob.players:
+                        e.leave_game()
                 elif t[0] == 0:
-                    test_pgn.pop(-1)
-                    await game_ob.get_opponent(op_colour).send(json.dumps({"invalid" : pgn}))
-                    print("invalid")
+                    game_ob.test_pgn.pop(-1)
+                    await game_ob.get_opponent(op_colour).send(json.dumps({"invalid" : game_ob.pgn}))
+                    # print("invalid")
                 game.reset()
     finally:
         connected.remove(websocket)

@@ -19,7 +19,6 @@ socket2.addEventListener("message", function (event) {
 
 		if (event.data == "1") {
 			set_token(true);
-			// token = true;
 		}
 	} else if (event.data.includes("invalid")) {
 		document.getElementById("board").remove();
@@ -32,16 +31,20 @@ socket2.addEventListener("message", function (event) {
 			change_board(c);
 		}
 		set_token(true);
+
 	} else if (event.data.includes("move")) {
 		ob = JSON.parse(event.data);
 		console.log(ob.move);
 		change_board(ob.move);
 		set_token(true);
+
 	} else if (event.data.includes("checkmate")) {
 		ob = JSON.parse(event.data);
 		console.log(ob.checkmate);
 		console.log("Checkmate");
 		change_board(ob.checkmate);
+		alert("You have been Checkmated!")
+	
 	} else {
 		console.log(event.data);
 	}
@@ -63,6 +66,7 @@ function onmove(move, time, player) {
 	// console.log('{"move" : move, "time" : time, "colour" : player}')
 }
 
+
 function init() {
 	a = {init : [
 			localStorage.getItem("player_id"),
@@ -82,4 +86,4 @@ function get_token() {
 setTimeout(function () {
 	console.log(localStorage.getItem("player_id"))
 	init();
-}, 1000);
+}, 200);

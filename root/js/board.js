@@ -8,8 +8,7 @@
 
 setTimeout(function () {
 	set_board();
-
-}, 500);
+}, 300);
 
 // pieces
 function assign(name, e, link, c, id) {
@@ -331,6 +330,7 @@ function change_board(pgn) {
 move = "";
 moved_piece = 0;
 pgn = [];
+len = 16;
 
 function dragStart() {
 	moved_piece = this;
@@ -344,10 +344,24 @@ function dragEnter() {
 function dragDrop() {
 	time = 500;
 	a = get_token();
+	if (
+		a == true &&
+		moved_piece.classList.contains("own-piece") &&
+		JSON.stringify(moved_piece.classList).includes("PAWN")
+	) {
+		if (
+			this.hasChildNodes() == false &&
+			document.getElementsByClassName("piece").length == len &&
+			moved_piece.id != this.id[0]
+		) {
+			return;
+		}
+	}
 	if (a == true && moved_piece.classList.contains("own-piece")) {
 		if (this.hasChildNodes()) {
 			this.removeChild(this.lastElementChild);
 			this.append(moved_piece);
+			len -= 1;
 			move = moved_piece.id + this.id;
 			if (JSON.stringify(moved_piece.classList).includes("PAWN")) {
 				moved_piece.id = this.id[0];

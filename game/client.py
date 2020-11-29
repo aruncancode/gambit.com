@@ -21,6 +21,7 @@ class CurrentGame():
         self.players = []
         self.pool = 0
         self.pgn = []
+        self.test_pgn = []
     
     def add_player(self, player_object):
         self.players.append(player_object)
@@ -31,6 +32,3 @@ class CurrentGame():
     
     def end(self, winner, reason):
         print(winner, "wins by", reason)
-    
-    def move(self, move):
-        self.pgn.append(move)

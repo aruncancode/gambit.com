@@ -131,28 +131,43 @@ class King(Piece):
         # Up
         if y != 0 and board[y - 1][x] == 0:
             moves.append("K" + (l[x] + str(8 - (y - 1))))
+        elif y!=0 and board[y-1][x].colour != self.colour:
+            moves.append("K" + (l[x] + str(8 - (y - 1))))
         # Down
         if y != 7 and board[y + 1][x] == 0:
+            moves.append("K" +(l[x] + str(8 - (y + 1))))
+        elif y!=7 and board[y + 1][x].colour != self.colour:
             moves.append("K" +(l[x] + str(8 - (y + 1))))
         # Left
         if x != 0 and board[y][x - 1] == 0:
             moves.append("K" +(l[x - 1] + str(8 - (y))))
+        elif x!=0 and board[y][x-1].colour != self.colour:
+            moves.append("K" +(l[x - 1] + str(8 - (y))))
         # Right
         if x != 7 and board[y][x + 1] == 0:
+            moves.append("K" +(l[x + 1] + str(8 - (y))))
+        elif x!=7 and board[y][x+1].colour != self.colour:
             moves.append("K" +(l[x + 1] + str(8 - (y))))
         # TopLeft
         if y != 0 and x != 0 and board[y - 1][x - 1] == 0:
             moves.append("K" +(l[x - 1] + str(8 - (y - 1))))
+        elif y!=0 and x!=0 and board[y-1][x-1].colour != self.colour:
+            moves.append("K" +(l[x - 1] + str(8 - (y - 1))))
         # TopRight
         if y != 0 and x != 7 and board[y - 1][x + 1] == 0:
+            moves.append("K" +(l[x + 1] + str(8 - (y - 1))))
+        elif y != 0 and x != 7 and board[y - 1][x + 1].colour != self.colour:
             moves.append("K" +(l[x + 1] + str(8 - (y - 1))))
         # BottomLeft
         if y != 7 and x != 0 and board[y + 1][x - 1] == 0:
             moves.append("K" +(l[x - 1] + str(8 - (y + 1))))
+        elif y != 7 and x != 0 and board[y + 1][x - 1].colour != self.colour:
+            moves.append("K" +(l[x - 1] + str(8 - (y + 1))))
         # BottomRight
         if y != 7 and x != 7 and board[y + 1][x + 1] == 0:
             moves.append("K" +(l[x + 1] + str(8 - (y + 1))))
-
+        elif y != 7 and x != 7 and board[y + 1][x + 1].colour != self.colour:
+            moves.append("K" +(l[x + 1] + str(8 - (y + 1))))
         #Castling
         if self.hasMoved == False:
             #short

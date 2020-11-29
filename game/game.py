@@ -112,6 +112,7 @@ class Game:
         if move == "OG":
             return [1]
         possible_moves = flatten(board.allMoves(colour))
+        # print(move ,possible_moves)
 
         for e in range(len(possible_moves)):
             if move == possible_moves[e]:
@@ -148,15 +149,15 @@ class Game:
                     if "KING" in ids:
                         board.get_piece(ids).hasMoved = True
                     parsed_moves = ids
-            # else:
-            #     print(move)
-            #     return False
 
-        # board.show()
         if board.inCheck(colour, board.allMoves(op_colour)) == False:
             if board.inCheck(op_colour, board.allMoves(colour)) == True:
-                if len(self.kingMoves(pgn, op_colour, flatten(board.allMoves(op_colour)))) == 0:
+                print("check")
+                # print(self.kingMoves(pgn, op_colour, flatten(board.allMoves(op_colour))))
+                if self.kingMoves(pgn, op_colour, flatten(board.allMoves(op_colour))) and move == pgn[-1]:
                     return [2, parsed_moves]
+                else:
+                    return [1, parsed_moves]
             else:
                 return [1, parsed_moves]
         else:
@@ -166,20 +167,19 @@ class Game:
         # else:
         #     self.board.move(location, piece)
 
-    def kingMoves(self, pgn, p, possible_moves):
+    def kingMoves(self, a, p, possible_moves):
         # colour refers to the colour of the player we're checking for checkmate
         # possible moves refer to the moves of the player with the same colour
         board2 = Board()
         king_moves = []
         q = "b" if p == "w" else "w"
-
         for op_move in possible_moves:
-            pgn.append(op_move)
-            position = self.pgn_parser(pgn)
-            for num in range(len(flatten_list(position)[:-1])):
+            a.append(op_move)
+            t_position = self.pgn_parser(a)
+            for num in range(len(flatten_list(t_position))):
                 colour = "w" if num % 2 == 0 else "b"
                 op_colour = "w" if "w" != colour else "b"
-                move = flatten_list(position)[num]
+                move = flatten_list(t_position)[num]
                 location = move[-2:]
                 l = "abcdefgh"
                 op_colour = "w" if "w" != colour else "b"
@@ -203,12 +203,12 @@ class Game:
                             if "KING" in ids:
                                 board2.get_piece(ids).hasMoved = True
             if board2.inCheck(p, board2.allMoves(q)) == True:
-                board2.reset()
-                pgn.pop(-1)
+                a.pop(-1)
             elif board2.inCheck(p, board2.allMoves(q)) == False:
-                pgn.pop(-1)
-                king_moves.append(pgn[-1])
-        return king_moves
+                a.pop(-1)
+                return False
+            board2.reset()
+        return True
             
 
 
